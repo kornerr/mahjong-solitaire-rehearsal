@@ -1,4 +1,4 @@
-# Loads provided layout.
+# Load provided layout.
 Main
     PART CONST
         MAIN_LAYOUT     = "X_shaped"
