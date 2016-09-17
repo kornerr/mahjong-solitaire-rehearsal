@@ -2,7 +2,8 @@
 CLASS Main
     PART CONST
         #MAIN_LAYOUT     = "X_shaped"
-        MAIN_LAYOUT     = "cat"
+        #MAIN_LAYOUT     = "cat"
+        MAIN_LAYOUT     = "default"
         MAIN_LAYOUT_DIR = "layouts"
         MAIN_LAYOUT_EXT = "layout"
         MAIN_RESOLVER   = "pathResolver.MainResolver"
@@ -15,3 +16,4 @@ CLASS Main
         self.c.set("$RESOLVER.resolveFileNameAbs", fileName)
         fileNameAbs = self.c.get("$RESOLVER.fileNameAbs")
         self.c.set("layout.parseFileName", fileNameAbs)
+        print "errors", self.c.get("layout.errors")

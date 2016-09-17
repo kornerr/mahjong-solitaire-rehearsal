@@ -8,27 +8,19 @@ LAYOUT_PREFIX_VERSION = "kmahjongg-layout-v"
 LAYOUT_PREFIX_DEPTH   = "d"
 LAYOUT_PREFIX_HEIGHT  = "h"
 LAYOUT_PREFIX_WIDTH   = "w"
-# BEGIN FEATURE LAYOUT_ERRORS
-LAYOUT_VERSIONS = ["1.0",
-                   "1.1"]
-# END FEATURE LAYOUT_ERRORS
+# MJIN2_FEATURE LAYOUT_ERRORS/CONST
 
 class LayoutImpl(object):
     def __init__(self, c):
         self.c = c
     def __del__(self):
         self.c = None
-# BEGIN FEATURE LAYOUT_ERRORS
-    def errors(self, key):
-        return self.errlist
-# END FEATURE LAYOUT_ERRORS
+    # MJIN2_FEATURE LAYOUT_ERRORS/IMPL
     def parseField(self, lines, width, height):
         print "w/h", width, height
         print "field", lines
     def parseLines(self, lines):
-# BEGIN FEATURE LAYOUT_ERRORS
-        self.errlist = []
-# END FEATURE LAYOUT_ERRORS
+        # MJIN2_FEATURE LAYOUT_ERRORS/RESET
         # Field dimensions.
         depth  = 0
         height = LAYOUT_DEFAULT_HEIGHT
@@ -46,10 +38,7 @@ class LayoutImpl(object):
             # BEGIN Constants.
             if sln.startswith(LAYOUT_PREFIX_VERSION):
                 version = sln.split(LAYOUT_PREFIX_VERSION)[1]
-# BEGIN FEATURE LAYOUT_ERRORS
-                if version not in LAYOUT_VERSIONS:
-                    self.errlist.append("Unsupported version: '{0}'".format(version))
-# END FEATURE LAYOUT_ERRORS
+                # MJIN2_FEATURE LAYOUT_ERRORS/VERSION
             elif sln.startswith(LAYOUT_PREFIX_DEPTH):
                 depth = int(sln.split(LAYOUT_PREFIX_DEPTH)[1])
             elif sln.startswith(LAYOUT_PREFIX_HEIGHT):
@@ -68,12 +57,7 @@ class LayoutImpl(object):
                     fieldLines = []
                     fieldLineID = 0
             # END Field.
-# BEGIN FEATURE LAYOUT_ERRORS
-        if depth and len(fields) != depth:
-            err = "Invalid field depth. Got/expected: '{0}/{1}'"
-            self.errlist.append(err.format(len(fields),
-                                           depth))
-# END FEATURE LAYOUT_ERRORS
+        # MJIN2_FEATURE LAYOUT_ERRORS/DEPTH
         # TODO: check number of tiles
         #self.parseField(fieldLines, width, height)
         print "w/h/d", width, height, depth
@@ -91,10 +75,7 @@ class Layout(object):
         self.c.setConst("SCENE", sceneName)
         # API.
         self.c.provide("layout.parseFileName", self.impl.setParseFileName)
-# BEGIN FEATURE LAYOUT_ERRORS
-        self.c.provide("layout.errors", None, self.impl.errors)
-        self.impl.errlist = []
-# END FEATURE LAYOUT_ERRORS
+        # MJIN2_FEATURE LAYOUT_ERRORS/INIT
     def __del__(self):
         # Tear down.
         self.c.clear()
