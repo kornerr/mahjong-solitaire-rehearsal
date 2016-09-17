@@ -16,15 +16,28 @@ LAYOUT_VERSIONS = ["1.0",
 class LayoutImpl(object):
     def __init__(self, c):
         self.c = c
+        self.positions = []
     def __del__(self):
         self.c = None
 # BEGIN FEATURE LAYOUT_ERRORS
     def errors(self, key):
         return self.errlist
 # END FEATURE LAYOUT_ERRORS
-    def parseField(self, lines, width, height):
+    def parseFields(self, fields, width, height):
+        self.positions = []
         print "w/h", width, height
-        print "field", lines
+        for i in xrange(0, len(fields)):
+            field = fields[i]
+            for row in xrange(0, height - 1):
+                for column in xrange(0, width - 1):
+                    # Detect tile.
+                    if ((field[row][column]         == "1") and
+                        (field[row][column + 1]     == "2") and
+                        (field[row + 1][column]     == "4") and
+                        (field[row + 1][column + 1] == "3")):
+                        self.positions.append("{0} {1} {2}".format(i,
+                                                                   row,
+                                                                   column))
     def parseLines(self, lines):
 # BEGIN FEATURE LAYOUT_ERRORS
         self.errlist = []
@@ -74,10 +87,15 @@ class LayoutImpl(object):
             self.errlist.append(err.format(len(fields),
                                            depth))
 # END FEATURE LAYOUT_ERRORS
-        # TODO: check number of tiles
-        #self.parseField(fieldLines, width, height)
-        print "w/h/d", width, height, depth
-        print "fields nb", len(fields)
+        self.parseFields(fields, width, height)
+# BEGIN FEATURE LAYOUT_ERRORS
+        n = len(self.positions)
+        if (n % 2):
+            err = "Number of positions is not even: '{0}'"
+            self.errlist.append(err.format(n))
+# END FEATURE LAYOUT_ERRORS
+    def pos(self, key):
+        return self.positions
     def setParseFileName(self, key, value):
         fileName = value[0]
         with open(fileName, "r") as f:
@@ -91,6 +109,7 @@ class Layout(object):
         self.c.setConst("SCENE", sceneName)
         # API.
         self.c.provide("layout.parseFileName", self.impl.setParseFileName)
+        self.c.provide("layout.positions", None, self.impl.pos)
 # BEGIN FEATURE LAYOUT_ERRORS
         self.c.provide("layout.errors", None, self.impl.errors)
         self.impl.errlist = []

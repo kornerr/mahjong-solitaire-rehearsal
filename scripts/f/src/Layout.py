@@ -13,12 +13,25 @@ LAYOUT_PREFIX_WIDTH   = "w"
 class LayoutImpl(object):
     def __init__(self, c):
         self.c = c
+        self.positions = []
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE LAYOUT_ERRORS/IMPL
-    def parseField(self, lines, width, height):
+    def parseFields(self, fields, width, height):
+        self.positions = []
         print "w/h", width, height
-        print "field", lines
+        for i in xrange(0, len(fields)):
+            field = fields[i]
+            for row in xrange(0, height - 1):
+                for column in xrange(0, width - 1):
+                    # Detect tile.
+                    if ((field[row][column]         == "1") and
+                        (field[row][column + 1]     == "2") and
+                        (field[row + 1][column]     == "4") and
+                        (field[row + 1][column + 1] == "3")):
+                        self.positions.append("{0} {1} {2}".format(i,
+                                                                   row,
+                                                                   column))
     def parseLines(self, lines):
         # MJIN2_FEATURE LAYOUT_ERRORS/RESET
         # Field dimensions.
@@ -58,10 +71,10 @@ class LayoutImpl(object):
                     fieldLineID = 0
             # END Field.
         # MJIN2_FEATURE LAYOUT_ERRORS/DEPTH
-        # TODO: check number of tiles
-        #self.parseField(fieldLines, width, height)
-        print "w/h/d", width, height, depth
-        print "fields nb", len(fields)
+        self.parseFields(fields, width, height)
+        # MJIN2_FEATURE LAYOUT_ERRORS/EVEN
+    def pos(self, key):
+        return self.positions
     def setParseFileName(self, key, value):
         fileName = value[0]
         with open(fileName, "r") as f:
@@ -75,6 +88,7 @@ class Layout(object):
         self.c.setConst("SCENE", sceneName)
         # API.
         self.c.provide("layout.parseFileName", self.impl.setParseFileName)
+        self.c.provide("layout.positions", None, self.impl.pos)
         # MJIN2_FEATURE LAYOUT_ERRORS/INIT
     def __del__(self):
         # Tear down.

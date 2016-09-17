@@ -8,6 +8,11 @@ CLASS Layout
             err = "Invalid field depth. Got/expected: '{0}/{1}'"
             self.errlist.append(err.format(len(fields),
                                            depth))
+    PART EVEN
+        n = len(self.positions)
+        if (n % 2):
+            err = "Number of positions is not even: '{0}'"
+            self.errlist.append(err.format(n))
     PART IMPL
         def errors(self, key):
             return self.errlist
