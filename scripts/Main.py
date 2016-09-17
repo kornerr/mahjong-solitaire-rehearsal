@@ -1,10 +1,13 @@
 
 from pymjin2 import *
 
-MAIN_LAYOUT      = "X_shaped"
-MAIN_LAYOUT_DIR  = "layouts"
-MAIN_LAYOUT_EXT  = "layout"
-MAIN_RESOLVER    = "MainResolver"
+# BEGIN FEATURE MAIN_LAYOUT
+MAIN_LAYOUT     = "X_shaped"
+MAIN_LAYOUT_DIR = "layouts"
+MAIN_LAYOUT_EXT = "layout"
+MAIN_RESOLVER   = "pathResolver.MainResolver"
+# END FEATURE MAIN_LAYOUT
+
 MAIN_SOUND_START = "soundBuffer.default.start"
 
 class MainImpl(object):
@@ -13,19 +16,20 @@ class MainImpl(object):
         self.isOn = False
     def __del__(self):
         self.c = None
-    def loadLayout(self, name):
-        print "loadLayout", name
-        fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,
-                                        MAIN_LAYOUT,
-                                        MAIN_LAYOUT_EXT)
-        print fileName
     def onSpace(self, key, value):
         if (self.isOn):
             return
         self.isOn = True
         print "Space pressed. Start the game"
         self.c.set("$SNDSTART.state", "play")
-        self.loadLayout(MAIN_LAYOUT)
+# BEGIN FEATURE MAIN_LAYOUT
+        fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,
+                                        MAIN_LAYOUT,
+                                        MAIN_LAYOUT_EXT)
+        self.c.set("$RESOLVER.resolveFileNameAbs", fileName)
+        fileNameAbs = self.c.get("$RESOLVER.fileNameAbs")
+        self.c.set("layout.parseFileName", fileNameAbs)
+# END FEATURE MAIN_LAYOUT
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):
@@ -34,6 +38,9 @@ class Main(object):
         self.c.setConst("SCENE",    sceneName)
         self.c.setConst("SNDSTART", MAIN_SOUND_START)
         self.c.listen("input.SPACE.key", "1", self.impl.onSpace)
+# BEGIN FEATURE MAIN_LAYOUT
+        self.c.setConst("RESOLVER", MAIN_RESOLVER)
+# END FEATURE MAIN_LAYOUT
     def __del__(self):
         # Tear down.
         self.c.clear()

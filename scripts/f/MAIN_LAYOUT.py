@@ -1,7 +1,16 @@
 # Load provided layout.
-Main
+CLASS Main
     PART CONST
         MAIN_LAYOUT     = "X_shaped"
         MAIN_LAYOUT_DIR = "layouts"
         MAIN_LAYOUT_EXT = "layout"
-        MAIN_RESOLVER   = "MainResolver"
+        MAIN_RESOLVER   = "pathResolver.MainResolver"
+    PART INIT
+        self.c.setConst("RESOLVER", MAIN_RESOLVER)
+    PART IMPL
+        fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,
+                                        MAIN_LAYOUT,
+                                        MAIN_LAYOUT_EXT)
+        self.c.set("$RESOLVER.resolveFileNameAbs", fileName)
+        fileNameAbs = self.c.get("$RESOLVER.fileNameAbs")
+        self.c.set("layout.parseFileName", fileNameAbs)
