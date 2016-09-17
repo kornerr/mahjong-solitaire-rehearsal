@@ -7,7 +7,6 @@ MAIN_LAYOUT_DIR = "layouts"
 MAIN_LAYOUT_EXT = "layout"
 MAIN_RESOLVER   = "pathResolver.MainResolver"
 # END FEATURE MAIN_LAYOUT
-
 MAIN_SOUND_START = "soundBuffer.default.start"
 
 class MainImpl(object):
