@@ -1,7 +1,8 @@
 # Load provided layout.
 CLASS Main
     PART CONST
-        MAIN_LAYOUT     = "X_shaped"
+        #MAIN_LAYOUT     = "X_shaped"
+        MAIN_LAYOUT     = "cat"
         MAIN_LAYOUT_DIR = "layouts"
         MAIN_LAYOUT_EXT = "layout"
         MAIN_RESOLVER   = "pathResolver.MainResolver"

@@ -2,7 +2,8 @@
 from pymjin2 import *
 
 # BEGIN FEATURE MAIN_LAYOUT
-MAIN_LAYOUT     = "X_shaped"
+#MAIN_LAYOUT     = "X_shaped"
+MAIN_LAYOUT     = "cat"
 MAIN_LAYOUT_DIR = "layouts"
 MAIN_LAYOUT_EXT = "layout"
 MAIN_RESOLVER   = "pathResolver.MainResolver"
@@ -16,7 +17,7 @@ class MainImpl(object):
     def __del__(self):
         self.c = None
     def onSpace(self, key, value):
-        if (self.isOn):
+        if self.isOn:
             return
         self.isOn = True
         print "Space pressed. Start the game"

@@ -11,7 +11,7 @@ class MainImpl(object):
     def __del__(self):
         self.c = None
     def onSpace(self, key, value):
-        if (self.isOn):
+        if self.isOn:
             return
         self.isOn = True
         print "Space pressed. Start the game"
