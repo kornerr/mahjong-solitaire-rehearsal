@@ -4,7 +4,7 @@ node
         light
             light = default
             parent = ROOT
-            position = 0.000000 -10.000000 20.000000
+            position = -10.000000 -5.000000 20.000000
             script = scripts/Main.py
         camera
             parent = ROOT
@@ -15,8 +15,12 @@ node
             parent = ROOT
             script = scripts/Layout.py
         field
+            material = field
             model = models/field.osgt
             parent = ROOT
         tiles
-            model = models/tile.osgt
             parent = field
+        testtile1
+            material = tile01
+            model = models/tile.osgt
+            parent = tiles
