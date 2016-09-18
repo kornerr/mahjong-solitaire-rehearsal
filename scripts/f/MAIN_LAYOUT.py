@@ -16,5 +16,8 @@ CLASS Main
         self.c.set("$RESOLVER.resolveFileNameAbs", fileName)
         fileNameAbs = self.c.get("$RESOLVER.fileNameAbs")
         self.c.set("layout.parseFileName", fileNameAbs)
-        print "errors", self.c.get("layout.errors")
-        print "positions", self.c.get("layout.positions")
+        errors = self.c.get("layout.errors")
+        if (len(errors)):
+            print "Cannot proceed, because there are errors:"
+            print errors
+            return

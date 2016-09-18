@@ -30,9 +30,18 @@ class MainImpl(object):
         self.c.set("$RESOLVER.resolveFileNameAbs", fileName)
         fileNameAbs = self.c.get("$RESOLVER.fileNameAbs")
         self.c.set("layout.parseFileName", fileNameAbs)
-        print "errors", self.c.get("layout.errors")
-        print "positions", self.c.get("layout.positions")
+        errors = self.c.get("layout.errors")
+        if (len(errors)):
+            print "Cannot proceed, because there are errors:"
+            print errors
+            return
 # END FEATURE MAIN_LAYOUT
+# BEGIN FEATURE MAIN_LAYOUT_TILES
+        positions = self.c.get("layout.positions")
+        for p in positions:
+            self.c.setConst("TILE", p)
+            self.c.set("tile.$TILE.position", p)
+# END FEATURE MAIN_LAYOUT_TILES
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):

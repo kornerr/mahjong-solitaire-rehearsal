@@ -17,6 +17,7 @@ class MainImpl(object):
         print "Space pressed. Start the game"
         self.c.set("$SNDSTART.state", "play")
         # MJIN2_FEATURE MAIN_LAYOUT/IMPL
+        # MJIN2_FEATURE MAIN_LAYOUT_TILES/IMPL
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):

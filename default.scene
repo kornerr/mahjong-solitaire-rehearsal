@@ -21,7 +21,3 @@ node
         tiles
             parent = field
             script = scripts/Tiles.py
-        testtile1
-            material = tile01
-            model = models/tile.osgt
-            parent = tiles
