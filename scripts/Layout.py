@@ -19,13 +19,16 @@ class LayoutImpl(object):
         self.positions = []
     def __del__(self):
         self.c = None
+# BEGIN FEATURE LAYOUT_DIMENSIONS
+    def dimensions(self, key):
+        return self.dim
+# END FEATURE LAYOUT_DIMENSIONS
 # BEGIN FEATURE LAYOUT_ERRORS
     def errors(self, key):
         return self.errlist
 # END FEATURE LAYOUT_ERRORS
     def parseFields(self, fields, width, height):
         self.positions = []
-        print "w/h", width, height
         for i in xrange(0, len(fields)):
             field = fields[i]
             for row in xrange(0, height - 1):
@@ -81,6 +84,10 @@ class LayoutImpl(object):
                     fieldLines = []
                     fieldLineID = 0
             # END Field.
+# BEGIN FEATURE LAYOUT_DIMENSIONS
+        self.dim = [str(width),
+                    str(height)]
+# END FEATURE LAYOUT_DIMENSIONS
 # BEGIN FEATURE LAYOUT_ERRORS
         if depth and len(fields) != depth:
             err = "Invalid field depth. Got/expected: '{0}/{1}'"
@@ -107,9 +114,14 @@ class Layout(object):
         self.c = EnvironmentClient(env, "Layout")
         self.impl = LayoutImpl(self.c)
         self.c.setConst("SCENE", sceneName)
+        self.c.setConst("NODE",  nodeName)
         # API.
         self.c.provide("layout.parseFileName", self.impl.setParseFileName)
         self.c.provide("layout.positions", None, self.impl.pos)
+# BEGIN FEATURE LAYOUT_DIMENSIONS
+        self.c.provide("layout.dimensions", None, self.impl.dimensions)
+        self.impl.dim = ["0", "0"]
+# END FEATURE LAYOUT_DIMENSIONS
 # BEGIN FEATURE LAYOUT_ERRORS
         self.c.provide("layout.errors", None, self.impl.errors)
         self.impl.errlist = []

@@ -18,12 +18,14 @@ class MainImpl(object):
         self.c.set("$SNDSTART.state", "play")
         # MJIN2_FEATURE MAIN_LAYOUT/IMPL
         # MJIN2_FEATURE MAIN_LAYOUT_TILES/IMPL
+        # MJIN2_FEATURE CENTER_TILES/IMPL
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Main")
         self.impl = MainImpl(self.c)
         self.c.setConst("SCENE",    sceneName)
+        self.c.setConst("NODE",     nodeName)
         self.c.setConst("SNDSTART", MAIN_SOUND_START)
         self.c.listen("input.SPACE.key", "1", self.impl.onSpace)
         # MJIN2_FEATURE MAIN_LAYOUT/INIT

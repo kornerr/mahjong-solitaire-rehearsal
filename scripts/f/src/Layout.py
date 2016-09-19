@@ -16,10 +16,10 @@ class LayoutImpl(object):
         self.positions = []
     def __del__(self):
         self.c = None
+    # MJIN2_FEATURE LAYOUT_DIMENSIONS/IMPL
     # MJIN2_FEATURE LAYOUT_ERRORS/IMPL
     def parseFields(self, fields, width, height):
         self.positions = []
-        print "w/h", width, height
         for i in xrange(0, len(fields)):
             field = fields[i]
             for row in xrange(0, height - 1):
@@ -70,6 +70,7 @@ class LayoutImpl(object):
                     fieldLines = []
                     fieldLineID = 0
             # END Field.
+        # MJIN2_FEATURE LAYOUT_DIMENSIONS/ASSIGN
         # MJIN2_FEATURE LAYOUT_ERRORS/DEPTH
         self.parseFields(fields, width, height)
         # MJIN2_FEATURE LAYOUT_ERRORS/EVEN
@@ -86,9 +87,11 @@ class Layout(object):
         self.c = EnvironmentClient(env, "Layout")
         self.impl = LayoutImpl(self.c)
         self.c.setConst("SCENE", sceneName)
+        self.c.setConst("NODE",  nodeName)
         # API.
         self.c.provide("layout.parseFileName", self.impl.setParseFileName)
         self.c.provide("layout.positions", None, self.impl.pos)
+        # MJIN2_FEATURE LAYOUT_DIMENSIONS/INIT
         # MJIN2_FEATURE LAYOUT_ERRORS/INIT
     def __del__(self):
         # Tear down.

@@ -15,6 +15,17 @@ class TilesImpl(object):
 # END FEATURE TILES_POSITION
     def __del__(self):
         self.c = None
+# BEGIN FEATURE CENTER_TILES
+    def setCenter(self, key, value):
+        print "setCenter", key, value
+        w = int(value[0])
+        h = int(value[1])
+        offset = (w / 2.0 * self.tileDim[0] / 2.0,
+                  h / 2.0 * self.tileDim[1] / 2.0 - self.tileDim[1])
+        print "offset", offset
+        pos = "{0} {1} 0".format(-offset[0], -offset[1])
+        self.c.set("node.$SCENE.$NODE.position", pos)
+# END FEATURE CENTER_TILES
 # BEGIN FEATURE TILES_POSITION
     def calculateTileDimOnce(self):
         if (len(self.tileDim)):
@@ -44,11 +55,11 @@ class TilesImpl(object):
 # BEGIN FEATURE TILES_POSITION
         self.calculateTileDimOnce()
         k = 0.5
-        pos = "{0} {1} {2}".format(float(p[2]) * self.tileDim[0] * k,
-                                   float(p[1]) * self.tileDim[1] * k,
-                                   float(p[0]) * self.tileDim[2])
-        print "pos", pos
-        # END FEATURE TILES_POSITION
+        x = float(p[2]) * self.tileDim[0] * k
+        y = float(p[1]) * self.tileDim[1] * k
+        z = float(p[0]) * self.tileDim[2]
+        pos = "{0} {1} {2}".format(x, y, z)
+# END FEATURE TILES_POSITION
         self.c.set("node.$SCENE.$TILE.position", pos)
 
 class Tiles(object):
@@ -56,9 +67,13 @@ class Tiles(object):
         self.c = EnvironmentClient(env, "Tiles")
         self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
+        self.c.setConst("NODE",  nodeName)
         # API.
         self.c.provide("tiles.delete", self.impl.setDelete)
         self.c.provide("tile..position", self.impl.setPosition)
+# BEGIN FEATURE CENTER_TILES
+        self.c.provide("tiles.center", self.impl.setCenter)
+# END FEATURE CENTER_TILES
     def __del__(self):
         # Tear down.
         self.c.clear()

@@ -14,8 +14,7 @@ CLASS Tiles
     PART TRANSLATE
         self.calculateTileDimOnce()
         k = 0.5
-        pos = "{0} {1} {2}".format(float(p[2]) * self.tileDim[0] * k,
-                                   float(p[1]) * self.tileDim[1] * k,
-                                   float(p[0]) * self.tileDim[2])
-        print "pos", pos
-
+        x = float(p[2]) * self.tileDim[0] * k
+        y = float(p[1]) * self.tileDim[1] * k
+        z = float(p[0]) * self.tileDim[2]
+        pos = "{0} {1} {2}".format(x, y, z)

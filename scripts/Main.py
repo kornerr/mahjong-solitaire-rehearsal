@@ -38,16 +38,23 @@ class MainImpl(object):
 # END FEATURE MAIN_LAYOUT
 # BEGIN FEATURE MAIN_LAYOUT_TILES
         positions = self.c.get("layout.positions")
+        # Create tiles.
         for p in positions:
             self.c.setConst("TILE", p)
             self.c.set("tile.$TILE.position", p)
 # END FEATURE MAIN_LAYOUT_TILES
+# BEGIN FEATURE CENTER_TILES
+        dim = self.c.get("layout.dimensions")
+        print "dim", dim
+        self.c.set("tiles.center", dim)
+# END FEATURE CENTER_TILES
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Main")
         self.impl = MainImpl(self.c)
         self.c.setConst("SCENE",    sceneName)
+        self.c.setConst("NODE",     nodeName)
         self.c.setConst("SNDSTART", MAIN_SOUND_START)
         self.c.listen("input.SPACE.key", "1", self.impl.onSpace)
 # BEGIN FEATURE MAIN_LAYOUT
