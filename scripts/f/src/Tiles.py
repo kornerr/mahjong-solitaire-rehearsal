@@ -3,6 +3,7 @@ from pymjin2 import *
 
 TILE_MODEL           = "models/tile.osgt"
 TILE_PREFIX_MATERIAL = "tile0"
+# MJIN2_FEATURE AVAILABLE_TILES/CONST
 
 class TilesImpl(object):
     def __init__(self, c, nodeName):
