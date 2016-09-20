@@ -19,6 +19,7 @@ class MainImpl(object):
         # MJIN2_FEATURE MAIN_LAYOUT/IMPL
         # MJIN2_FEATURE MAIN_LAYOUT_TILES/IMPL
         # MJIN2_FEATURE CENTER_TILES/IMPL
+        # MJIN2_FEATURE IDENTIFY_TILES/IMPL
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):

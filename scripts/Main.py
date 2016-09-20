@@ -45,9 +45,15 @@ class MainImpl(object):
 # END FEATURE MAIN_LAYOUT_TILES
 # BEGIN FEATURE CENTER_TILES
         dim = self.c.get("layout.dimensions")
-        print "dim", dim
         self.c.set("tiles.center", dim)
 # END FEATURE CENTER_TILES
+# BEGIN FEATURE IDENTIFY_TILES
+        for p in positions:
+            self.c.setConst("TILE", p)
+            # Generate random number in [1; 9] range.
+            id = rand() % 9 + 1
+            self.c.set("tile.$TILE.id", str(id))
+# END FEATURE IDENTIFY_TILES
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):

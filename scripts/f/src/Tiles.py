@@ -13,6 +13,7 @@ class TilesImpl(object):
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE CENTER_TILES/IMPL
+    # MJIN2_FEATURE IDENTIFY_TILES/IMPL
     # MJIN2_FEATURE TILES_POSITION/IMPL
     def createTileOnce(self, tileName):
         if (tileName in self.tiles):
@@ -44,6 +45,7 @@ class Tiles(object):
         self.c.provide("tiles.delete", self.impl.setDelete)
         self.c.provide("tile..position", self.impl.setPosition)
         # MJIN2_FEATURE CENTER_TILES/INIT
+        # MJIN2_FEATURE IDENTIFY_TILES/INIT
     def __del__(self):
         # Tear down.
         self.c.clear()

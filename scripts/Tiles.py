@@ -17,15 +17,30 @@ class TilesImpl(object):
         self.c = None
 # BEGIN FEATURE CENTER_TILES
     def setCenter(self, key, value):
-        print "setCenter", key, value
         w = int(value[0])
         h = int(value[1])
         offset = (w / 2.0 * self.tileDim[0] / 2.0,
                   h / 2.0 * self.tileDim[1] / 2.0 - self.tileDim[1])
-        print "offset", offset
         pos = "{0} {1} 0".format(-offset[0], -offset[1])
         self.c.set("node.$SCENE.$NODE.position", pos)
 # END FEATURE CENTER_TILES
+# BEGIN FEATURE IDENTIFY_TILES
+    def tileID(self, key):
+        tileName = key[1]
+        if (tileName in self.ids):
+            id = self.ids[tileName]
+            return [str(id)]
+        # Invalid ID for invalid tile name.
+        return ["0"]
+    def setTileID(self, key, value):
+        tileName = key[1]
+        sid = value[0]
+        mat = TILE_PREFIX_MATERIAL + sid
+        self.c.setConst("TILE", tileName)
+        self.c.set("node.$SCENE.$TILE.material", mat)
+        # Store.
+        self.ids[tileName] = int(sid)
+# END FEATURE IDENTIFY_TILES
 # BEGIN FEATURE TILES_POSITION
     def calculateTileDimOnce(self):
         if (len(self.tileDim)):
@@ -74,6 +89,10 @@ class Tiles(object):
 # BEGIN FEATURE CENTER_TILES
         self.c.provide("tiles.center", self.impl.setCenter)
 # END FEATURE CENTER_TILES
+# BEGIN FEATURE IDENTIFY_TILES
+        self.c.provide("tile..id", self.impl.setTileID, self.impl.tileID)
+        self.impl.ids = {}
+# END FEATURE IDENTIFY_TILES
     def __del__(self):
         # Tear down.
         self.c.clear()
