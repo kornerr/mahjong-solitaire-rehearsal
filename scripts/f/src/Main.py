@@ -2,6 +2,7 @@
 from pymjin2 import *
 
 # MJIN2_FEATURE MAIN_LAYOUT/CONST
+# MJIN2_FEATURE IDENTIFY_TILES/CONST
 MAIN_SOUND_START = "soundBuffer.default.start"
 
 class MainImpl(object):

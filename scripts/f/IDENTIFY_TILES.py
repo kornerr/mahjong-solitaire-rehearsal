@@ -1,11 +1,25 @@
 # Provide 'tile..id' and use it.
 CLASS Main
+    PART CONST
+        MAIN_TILE_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     PART IMPL
-        for p in positions:
-            self.c.setConst("TILE", p)
-            # Generate random number in [1; 9] range.
-            id = rand() % 9 + 1
+        i = 1
+        vpos = list(positions)
+        # Distribute IDs so that each ID has a pair.
+        while (len(vpos)):
+            i = i + 1
+            positionID = rand() % len(vpos)
+            idsID = i / 2 - 1
+            # Reset i.
+            if (idsID >= len(MAIN_TILE_IDS)):
+                i = 2
+                idsID = 0
+            pos = vpos[positionID]
+            id = MAIN_TILE_IDS[idsID]
+            # Assign.
+            self.c.setConst("TILE", pos)
             self.c.set("tile.$TILE.id", str(id))
+            del vpos[positionID]
 CLASS Tiles
     PART INIT
         self.c.provide("tile..id", self.impl.setTileID, self.impl.tileID)

@@ -9,6 +9,9 @@ MAIN_LAYOUT_DIR = "layouts"
 MAIN_LAYOUT_EXT = "layout"
 MAIN_RESOLVER   = "pathResolver.MainResolver"
 # END FEATURE MAIN_LAYOUT
+# BEGIN FEATURE IDENTIFY_TILES
+MAIN_TILE_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# END FEATURE IDENTIFY_TILES
 MAIN_SOUND_START = "soundBuffer.default.start"
 
 class MainImpl(object):
@@ -48,11 +51,23 @@ class MainImpl(object):
         self.c.set("tiles.center", dim)
 # END FEATURE CENTER_TILES
 # BEGIN FEATURE IDENTIFY_TILES
-        for p in positions:
-            self.c.setConst("TILE", p)
-            # Generate random number in [1; 9] range.
-            id = rand() % 9 + 1
+        i = 1
+        vpos = list(positions)
+        # Distribute IDs so that each ID has a pair.
+        while (len(vpos)):
+            i = i + 1
+            positionID = rand() % len(vpos)
+            idsID = i / 2 - 1
+            # Reset i.
+            if (idsID >= len(MAIN_TILE_IDS)):
+                i = 2
+                idsID = 0
+            pos = vpos[positionID]
+            id = MAIN_TILE_IDS[idsID]
+            # Assign.
+            self.c.setConst("TILE", pos)
             self.c.set("tile.$TILE.id", str(id))
+            del vpos[positionID]
 # END FEATURE IDENTIFY_TILES
 
 class Main(object):
