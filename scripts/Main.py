@@ -69,6 +69,9 @@ class MainImpl(object):
             self.c.set("tile.$TILE.id", str(id))
             del vpos[positionID]
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE AVAILABLE_TILES
+        self.c.set("tiles.refreshAvailability", "1")
+# END FEATURE AVAILABLE_TILES
 
 class Main(object):
     def __init__(self, sceneName, nodeName, env):

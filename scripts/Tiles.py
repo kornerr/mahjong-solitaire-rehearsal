@@ -41,6 +41,10 @@ class TilesImpl(object):
         # Store.
         self.ids[tileName] = int(sid)
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE AVAILABLE_TILES
+    def setRefreshAvailability(self, key, value):
+        print "setRefreshAvailability", key, value
+# END FEATURE AVAILABLE_TILES
 # BEGIN FEATURE TILES_POSITION
     def calculateTileDimOnce(self):
         if (len(self.tileDim)):
@@ -93,6 +97,10 @@ class Tiles(object):
         self.c.provide("tile..id", self.impl.setTileID, self.impl.tileID)
         self.impl.ids = {}
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE AVAILABLE_TILES
+        self.c.provide("tiles.refreshAvailability",
+                       self.impl.setRefreshAvailability)
+# END FEATURE AVAILABLE_TILES
     def __del__(self):
         # Tear down.
         self.c.clear()
