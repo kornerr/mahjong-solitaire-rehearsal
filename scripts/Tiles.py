@@ -6,6 +6,9 @@ TILE_PREFIX_MATERIAL = "tile0"
 # BEGIN FEATURE AVAILABLE_TILES
 TILE_MATERIAL_UNAVAILABLE = "tile0{0}_unavailable"
 # END FEATURE AVAILABLE_TILES
+# BEGIN FEATURE TILES_SELECTION
+TILE_MATERIAL_SELECTED = "tile0{0}_selected"
+# END FEATURE TILES_SELECTION
 
 class TilesImpl(object):
     def __init__(self, c, nodeName):
@@ -92,6 +95,26 @@ class TilesImpl(object):
                         float(bb[3]) - float(bb[2]),
                         float(bb[5]) - float(bb[4])]
 # END FEATURE TILES_POSITION
+# BEGIN FEATURE TILES_SELECTION
+    def onTileSelection(self, key, value):
+        tileName = key[2]
+        if (self.lastSelectedTile):
+            # Do nothing.
+            if (tileName == self.lastSelectedTile):
+                return
+            # Deselect previously selected tile.
+            self.setTileSelected(self.lastSelectedTile, False)
+        # Select tile.
+        self.setTileSelected(tileName, True)
+        self.lastSelectedTile = tileName
+    def setTileSelected(self, tileName, state):
+        id = self.ids[tileName]
+        mat = TILE_PREFIX_MATERIAL + str(id)
+        if (state):
+            mat = TILE_MATERIAL_SELECTED.format(id)
+        self.c.setConst("TILE", tileName)
+        self.c.set("node.$SCENE.$TILE.material", mat)
+# END FEATURE TILES_SELECTION
     def createTileOnce(self, tileName):
         if (tileName in self.tiles):
             return
@@ -139,6 +162,10 @@ class Tiles(object):
         self.c.provide("tiles.refreshAvailability",
                        self.impl.setRefreshAvailability)
 # END FEATURE AVAILABLE_TILES
+# BEGIN FEATURE TILES_SELECTION
+        self.c.listen("node.$SCENE..selected", None, self.impl.onTileSelection)
+        self.impl.lastSelectedTile = None
+# END FEATURE TILES_SELECTION
     def __del__(self):
         # Tear down.
         self.c.clear()
