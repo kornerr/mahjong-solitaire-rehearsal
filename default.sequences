@@ -1,0 +1,25 @@
+start
+    main.replayStartSound
+    main.replayStartSound
+    main.replayStartSound
+#    main.loadLayout
+#    main.checkLayoutErrors
+#    createTiles
+#    centerTiles
+#    identifyTiles
+#    refreshAvailability
+#layoutErrors
+#    showError
+#tileSelection
+#    depictSelection
+#    matchTiles
+#matchSuccess
+#    deleteTilePair
+#    deleteTileIDs
+#    deleteTileAvailabilities
+#    refreshAvailability
+#    checkResult
+#victory
+#    makeTilesFallDown
+#loss
+#    rotateToLossTiles
