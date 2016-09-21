@@ -5,14 +5,13 @@ CLASS Main
 CLASS Tiles
     PART CONST
         TILE_MATERIAL_UNAVAILABLE = "tile0{0}_unavailable"
+    PART DELETE
+        del self.available[tileName]
     PART INIT
         self.c.provide("tiles.refreshAvailability",
                        self.impl.setRefreshAvailability)
+        self.impl.available = {}
     PART IMPL
-        def refreshAvailability(self):
-            for tileName in self.ids:
-                state = self.tileIsAvailable(tileName)
-                self.setTileAvailable(tileName, state)
         def setRefreshAvailability(self, key, value):
             self.refreshAvailability()
         def setTileAvailable(self, tileName, state):
@@ -26,6 +25,13 @@ CLASS Tiles
             # Make available tile selectable.
             val = ("1" if state else "0")
             self.c.set("node.$SCENE.$TILE.selectable", val)
+            # Cache.
+            if (state):
+                self.available[tileName] = True
+                print "available.", tileName, True
+            elif (tileName in self.available):
+                print "available.", tileName, False
+                del self.available[tileName]
         def tileHasNeighbours(self, tileName, offsetDepth, offsetRow):
             p = tileName.split(" ")
             pos = (int(p[0]), int(p[1]), int(p[2]))
@@ -48,3 +54,7 @@ CLASS Tiles
                     return False
             # Tile is free.
             return True
+    PART REFRESH
+        for tileName in self.ids:
+            state = self.tileIsAvailable(tileName)
+            self.setTileAvailable(tileName, state)

@@ -19,6 +19,7 @@ class TilesImpl(object):
     # MJIN2_FEATURE AVAILABLE_TILES/IMPL
     # MJIN2_FEATURE TILES_POSITION/IMPL
     # MJIN2_FEATURE TILES_SELECTION/IMPL
+    # MJIN2_FEATURE TILES_STATS/IMPL
     def createTileOnce(self, tileName):
         if (tileName in self.tiles):
             return
@@ -31,6 +32,11 @@ class TilesImpl(object):
         self.c.setConst("TILE", tileName)
         self.c.set("node.$SCENE.$TILE.parent", "")
         # MJIN2_FEATURE IDENTIFY_TILES/DELETE
+        # MJIN2_FEATURE AVAILABLE_TILES/DELETE
+    def refreshAvailability(self):
+        pass
+        # MJIN2_FEATURE AVAILABLE_TILES/REFRESH
+        # MJIN2_FEATURE TILES_STATS/REFRESH
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)
@@ -53,6 +59,7 @@ class Tiles(object):
         # MJIN2_FEATURE IDENTIFY_TILES/INIT
         # MJIN2_FEATURE AVAILABLE_TILES/INIT
         # MJIN2_FEATURE TILES_SELECTION/INIT
+        # MJIN2_FEATURE TILES_STATS/INIT
     def __del__(self):
         # Tear down.
         self.c.clear()

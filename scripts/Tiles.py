@@ -48,10 +48,6 @@ class TilesImpl(object):
         self.ids[tileName] = int(sid)
 # END FEATURE IDENTIFY_TILES
 # BEGIN FEATURE AVAILABLE_TILES
-    def refreshAvailability(self):
-        for tileName in self.ids:
-            state = self.tileIsAvailable(tileName)
-            self.setTileAvailable(tileName, state)
     def setRefreshAvailability(self, key, value):
         self.refreshAvailability()
     def setTileAvailable(self, tileName, state):
@@ -65,6 +61,13 @@ class TilesImpl(object):
         # Make available tile selectable.
         val = ("1" if state else "0")
         self.c.set("node.$SCENE.$TILE.selectable", val)
+        # Cache.
+        if (state):
+            self.available[tileName] = True
+            print "available.", tileName, True
+        elif (tileName in self.available):
+            print "available.", tileName, False
+            del self.available[tileName]
     def tileHasNeighbours(self, tileName, offsetDepth, offsetRow):
         p = tileName.split(" ")
         pos = (int(p[0]), int(p[1]), int(p[2]))
@@ -132,6 +135,32 @@ class TilesImpl(object):
         self.c.setConst("TILE", tileName)
         self.c.set("node.$SCENE.$TILE.material", mat)
 # END FEATURE TILES_SELECTION
+# BEGIN FEATURE TILES_STATS
+    def reportStats(self):
+        print "reportStats"
+        tilesNb    = len(self.ids)
+        hasMatches = False
+        print "available tiles nb", len(self.available)
+        # Find out if there is at least one pair
+        # of matching tiles available.
+        ids = { }
+        for tileName in self.available:
+            id = self.ids[tileName]
+            if (id not in ids):
+                ids[id] = 0
+            ids[id] = ids[id] + 1
+            print "tileName", tileName
+            print "ids", ids
+            # A pair has been found.
+            if (ids[id] > 1):
+                hasMatches = True
+                break
+        # Report.
+        val = [str(tilesNb),
+               "1" if hasMatches else "0"]
+        print val
+        self.c.report("tiles.stats", val)
+# END FEATURE TILES_STATS
     def createTileOnce(self, tileName):
         if (tileName in self.tiles):
             return
@@ -146,6 +175,19 @@ class TilesImpl(object):
 # BEGIN FEATURE IDENTIFY_TILES
         del self.ids[tileName]
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE AVAILABLE_TILES
+        del self.available[tileName]
+# END FEATURE AVAILABLE_TILES
+    def refreshAvailability(self):
+        pass
+# BEGIN FEATURE AVAILABLE_TILES
+        for tileName in self.ids:
+            state = self.tileIsAvailable(tileName)
+            self.setTileAvailable(tileName, state)
+# END FEATURE AVAILABLE_TILES
+# BEGIN FEATURE TILES_STATS
+        self.reportStats()
+# END FEATURE TILES_STATS
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)
@@ -181,11 +223,16 @@ class Tiles(object):
 # BEGIN FEATURE AVAILABLE_TILES
         self.c.provide("tiles.refreshAvailability",
                        self.impl.setRefreshAvailability)
+        self.impl.available = {}
 # END FEATURE AVAILABLE_TILES
 # BEGIN FEATURE TILES_SELECTION
         self.c.listen("node.$SCENE..selected", None, self.impl.onTileSelection)
         self.impl.lastSelectedTile = None
 # END FEATURE TILES_SELECTION
+# BEGIN FEATURE TILES_STATS
+        # Report only.
+        self.c.provide("tiles.stats")
+# END FEATURE TILES_STATS
     def __del__(self):
         # Tear down.
         self.c.clear()

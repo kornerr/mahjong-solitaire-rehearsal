@@ -2,7 +2,8 @@
 from pymjin2 import *
 
 # BEGIN FEATURE MAIN_LAYOUT
-MAIN_LAYOUT     = "X_shaped"
+#MAIN_LAYOUT     = "X_shaped"
+MAIN_LAYOUT     = "test"
 #MAIN_LAYOUT     = "cat"
 #MAIN_LAYOUT     = "default"
 MAIN_LAYOUT_DIR = "layouts"
