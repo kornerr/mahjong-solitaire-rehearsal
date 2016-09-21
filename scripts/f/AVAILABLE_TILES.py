@@ -9,10 +9,12 @@ CLASS Tiles
         self.c.provide("tiles.refreshAvailability",
                        self.impl.setRefreshAvailability)
     PART IMPL
-        def setRefreshAvailability(self, key, value):
+        def refreshAvailability(self):
             for tileName in self.ids:
                 state = self.tileIsAvailable(tileName)
                 self.setTileAvailable(tileName, state)
+        def setRefreshAvailability(self, key, value):
+            self.refreshAvailability()
         def setTileAvailable(self, tileName, state):
             id = self.ids[tileName]
             mat = TILE_PREFIX_MATERIAL + str(id)

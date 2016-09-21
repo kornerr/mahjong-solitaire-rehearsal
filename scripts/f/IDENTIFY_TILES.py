@@ -40,3 +40,5 @@ CLASS Tiles
             self.c.set("node.$SCENE.$TILE.material", mat)
             # Store.
             self.ids[tileName] = int(sid)
+    PART DELETE
+        del self.ids[tileName]

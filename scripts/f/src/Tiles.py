@@ -27,8 +27,10 @@ class TilesImpl(object):
         # Default material.
         mat = TILE_PREFIX_MATERIAL + "1"
         self.c.set("node.$SCENE.$TILE.material", mat)
-    def setDelete(self, key, value):
-        print "setDelete", key, value
+    def deleteTile(self, tileName):
+        self.c.setConst("TILE", tileName)
+        self.c.set("node.$SCENE.$TILE.parent", "")
+        # MJIN2_FEATURE IDENTIFY_TILES/DELETE
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)
@@ -46,7 +48,6 @@ class Tiles(object):
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
         # API.
-        self.c.provide("tiles.delete", self.impl.setDelete)
         self.c.provide("tile..position", self.impl.setPosition)
         # MJIN2_FEATURE CENTER_TILES/INIT
         # MJIN2_FEATURE IDENTIFY_TILES/INIT

@@ -48,10 +48,12 @@ class TilesImpl(object):
         self.ids[tileName] = int(sid)
 # END FEATURE IDENTIFY_TILES
 # BEGIN FEATURE AVAILABLE_TILES
-    def setRefreshAvailability(self, key, value):
+    def refreshAvailability(self):
         for tileName in self.ids:
             state = self.tileIsAvailable(tileName)
             self.setTileAvailable(tileName, state)
+    def setRefreshAvailability(self, key, value):
+        self.refreshAvailability()
     def setTileAvailable(self, tileName, state):
         id = self.ids[tileName]
         mat = TILE_PREFIX_MATERIAL + str(id)
@@ -96,6 +98,17 @@ class TilesImpl(object):
                         float(bb[5]) - float(bb[4])]
 # END FEATURE TILES_POSITION
 # BEGIN FEATURE TILES_SELECTION
+    def matchTiles(self, tile1, tile2):
+        id1 = self.ids[tile1]
+        id2 = self.ids[tile2]
+        # Tiles do not match.
+        if (id1 != id2):
+            return False
+        # Delete matching tiles.
+        self.deleteTile(tile1)
+        self.deleteTile(tile2)
+        self.refreshAvailability()
+        return True
     def onTileSelection(self, key, value):
         tileName = key[2]
         if (self.lastSelectedTile):
@@ -104,6 +117,10 @@ class TilesImpl(object):
                 return
             # Deselect previously selected tile.
             self.setTileSelected(self.lastSelectedTile, False)
+            # Match.
+            if (self.matchTiles(self.lastSelectedTile, tileName)):
+                self.lastSelectedTile = None
+                return
         # Select tile.
         self.setTileSelected(tileName, True)
         self.lastSelectedTile = tileName
@@ -123,8 +140,12 @@ class TilesImpl(object):
         # Default material.
         mat = TILE_PREFIX_MATERIAL + "1"
         self.c.set("node.$SCENE.$TILE.material", mat)
-    def setDelete(self, key, value):
-        print "setDelete", key, value
+    def deleteTile(self, tileName):
+        self.c.setConst("TILE", tileName)
+        self.c.set("node.$SCENE.$TILE.parent", "")
+# BEGIN FEATURE IDENTIFY_TILES
+        del self.ids[tileName]
+# END FEATURE IDENTIFY_TILES
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)
@@ -149,7 +170,6 @@ class Tiles(object):
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
         # API.
-        self.c.provide("tiles.delete", self.impl.setDelete)
         self.c.provide("tile..position", self.impl.setPosition)
 # BEGIN FEATURE CENTER_TILES
         self.c.provide("tiles.center", self.impl.setCenter)
