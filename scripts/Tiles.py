@@ -64,9 +64,7 @@ class TilesImpl(object):
         # Cache.
         if (state):
             self.available[tileName] = True
-            print "available.", tileName, True
         elif (tileName in self.available):
-            print "available.", tileName, False
             del self.available[tileName]
     def tileHasNeighbours(self, tileName, offsetDepth, offsetRow):
         p = tileName.split(" ")
@@ -137,10 +135,8 @@ class TilesImpl(object):
 # END FEATURE TILES_SELECTION
 # BEGIN FEATURE TILES_STATS
     def reportStats(self):
-        print "reportStats"
-        tilesNb    = len(self.ids)
+        hasTiles   = len(self.ids) > 0
         hasMatches = False
-        print "available tiles nb", len(self.available)
         # Find out if there is at least one pair
         # of matching tiles available.
         ids = { }
@@ -149,16 +145,13 @@ class TilesImpl(object):
             if (id not in ids):
                 ids[id] = 0
             ids[id] = ids[id] + 1
-            print "tileName", tileName
-            print "ids", ids
             # A pair has been found.
             if (ids[id] > 1):
                 hasMatches = True
                 break
         # Report.
-        val = [str(tilesNb),
+        val = ["1" if hasTiles else "0",
                "1" if hasMatches else "0"]
-        print val
         self.c.report("tiles.stats", val)
 # END FEATURE TILES_STATS
     def createTileOnce(self, tileName):

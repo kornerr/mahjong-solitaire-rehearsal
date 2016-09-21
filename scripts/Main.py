@@ -21,6 +21,17 @@ class MainImpl(object):
         self.isOn = False
     def __del__(self):
         self.c = None
+# BEGIN FEATURE MAIN_RESULT
+    def onStats(self, key, value):
+        print "onStats", key, value
+        hasTiles = int(value[0])
+        hasMatches = int(value[1])
+        print "has tiles/matches", hasTiles, hasMatches
+        if (not hasTiles):
+            print "Victory"
+        elif (not hasMatches):
+            print "Loss"
+# END FEATURE MAIN_RESULT
     def onSpace(self, key, value):
         if self.isOn:
             return
@@ -85,6 +96,9 @@ class Main(object):
 # BEGIN FEATURE MAIN_LAYOUT
         self.c.setConst("RESOLVER", MAIN_RESOLVER)
 # END FEATURE MAIN_LAYOUT
+# BEGIN FEATURE MAIN_RESULT
+        self.c.listen("tiles.stats", None, self.impl.onStats)
+# END FEATURE MAIN_RESULT
     def __del__(self):
         # Tear down.
         self.c.clear()

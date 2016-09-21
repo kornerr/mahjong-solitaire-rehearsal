@@ -11,6 +11,7 @@ class MainImpl(object):
         self.isOn = False
     def __del__(self):
         self.c = None
+    # MJIN2_FEATURE MAIN_RESULT/IMPL
     def onSpace(self, key, value):
         if self.isOn:
             return
@@ -32,6 +33,7 @@ class Main(object):
         self.c.setConst("SNDSTART", MAIN_SOUND_START)
         self.c.listen("input.SPACE.key", "1", self.impl.onSpace)
         # MJIN2_FEATURE MAIN_LAYOUT/INIT
+        # MJIN2_FEATURE MAIN_RESULT/INIT
     def __del__(self):
         # Tear down.
         self.c.clear()

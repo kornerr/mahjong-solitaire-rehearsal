@@ -5,7 +5,7 @@ CLASS Tiles
         self.c.provide("tiles.stats")
     PART IMPL
         def reportStats(self):
-            tilesNb    = len(self.ids)
+            hasTiles   = len(self.ids) > 0
             hasMatches = False
             # Find out if there is at least one pair
             # of matching tiles available.
@@ -20,7 +20,7 @@ CLASS Tiles
                     hasMatches = True
                     break
             # Report.
-            val = [str(tilesNb),
+            val = ["1" if hasTiles else "0",
                    "1" if hasMatches else "0"]
             self.c.report("tiles.stats", val)
     PART REFRESH

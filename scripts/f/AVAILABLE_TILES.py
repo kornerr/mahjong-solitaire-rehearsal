@@ -28,9 +28,7 @@ CLASS Tiles
             # Cache.
             if (state):
                 self.available[tileName] = True
-                print "available.", tileName, True
             elif (tileName in self.available):
-                print "available.", tileName, False
                 del self.available[tileName]
         def tileHasNeighbours(self, tileName, offsetDepth, offsetRow):
             p = tileName.split(" ")
