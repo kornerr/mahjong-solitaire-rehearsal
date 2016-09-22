@@ -8,6 +8,7 @@ class MainImpl(object):
     def __init__(self, c):
         self.c = c
         self.isOn = False
+        # MJIN2_FEATURE MAIN_START_SOUND/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE MAIN_START_SOUND/IMPL
@@ -26,7 +27,6 @@ class Main(object):
         self.c.setConst("SCENE",    sceneName)
         self.c.setConst("NODE",     nodeName)
         self.c.listen("input.SPACE.key", "1", self.impl.onSpace)
-        # MJIN2_FEATURE MAIN_START_SOUND/INIT
     def __del__(self):
         # Tear down.
         self.c.clear()

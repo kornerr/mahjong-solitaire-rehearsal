@@ -1,7 +1,5 @@
 start
     main.replayStartSound
-    main.replayStartSound
-    main.replayStartSound
 #    main.loadLayout
 #    main.checkLayoutErrors
 #    createTiles

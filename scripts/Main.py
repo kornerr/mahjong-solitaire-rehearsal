@@ -2,7 +2,8 @@
 from pymjin2 import *
 
 # BEGIN FEATURE MAIN_START_SOUND
-MAIN_SOUND_START = "soundBuffer.default.start"
+MAIN_START_SOUND_API = "main.replayStartSound"
+MAIN_START_SOUND     = "soundBuffer.default.start"
 # END FEATURE MAIN_START_SOUND
 MAIN_SEQUENCE_START = "sequence.default.start"
 
@@ -10,13 +11,16 @@ class MainImpl(object):
     def __init__(self, c):
         self.c = c
         self.isOn = False
+# BEGIN FEATURE MAIN_START_SOUND
+        self.c.setConst("START_SOUND", MAIN_START_SOUND)
+        self.c.provide(MAIN_START_SOUND_API, self.setReplayStartSound)
+# END FEATURE MAIN_START_SOUND
     def __del__(self):
         self.c = None
 # BEGIN FEATURE MAIN_START_SOUND
     def setReplayStartSound(self, key, value):
-        print "setReplayStartSound"
-        self.c.set("$SNDSTART.state", "play")
-        self.c.report("main.replayStartSound", "0")
+        self.c.set("$START_SOUND.state", "play")
+        self.c.report(MAIN_START_SOUND_API, "0")
 # END FEATURE MAIN_START_SOUND
     def onSpace(self, key, value):
         if self.isOn:
@@ -33,10 +37,6 @@ class Main(object):
         self.c.setConst("SCENE",    sceneName)
         self.c.setConst("NODE",     nodeName)
         self.c.listen("input.SPACE.key", "1", self.impl.onSpace)
-# BEGIN FEATURE MAIN_START_SOUND
-        self.c.setConst("SNDSTART", MAIN_SOUND_START)
-        self.c.provide("main.replayStartSound", self.impl.setReplayStartSound)
-# END FEATURE MAIN_START_SOUND
     def __del__(self):
         # Tear down.
         self.c.clear()
