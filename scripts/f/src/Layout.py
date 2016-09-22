@@ -89,9 +89,9 @@ class LayoutImpl(object):
 class Layout(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Layout")
-        self.impl = LayoutImpl(self.c)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
+        self.impl = LayoutImpl(self.c)
     def __del__(self):
         # Tear down.
         self.c.clear()

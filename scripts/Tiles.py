@@ -8,7 +8,7 @@ TILES_AVAILABILITY_API    = "tiles.refreshAvailability"
 TILE_MATERIAL_UNAVAILABLE = "tile0{0}_unavailable"
 # END FEATURE TILES_AVAILABILITY
 # BEGIN FEATURE TILES_SELECTION
-TILE_MATERIAL_SELECTED = "tile0{0}_selected"
+TILE_SEQUENCE_SELECTION = "sequence.default.tileSelection"
 # END FEATURE TILES_SELECTION
 
 class TilesImpl(object):
@@ -32,6 +32,11 @@ class TilesImpl(object):
         self.c.provide(TILES_AVAILABILITY_API, self.setRefreshAvailability)
         self.available = {}
 # END FEATURE TILES_AVAILABILITY
+# BEGIN FEATURE TILES_SELECTION
+        self.c.setConst("SEQSELECT", TILE_SEQUENCE_SELECTION)
+        self.c.listen("node.$SCENE..selected", None, self.onTileSelection)
+        self.lastSelectedTile = None
+# END FEATURE TILES_SELECTION
     def __del__(self):
         self.c = None
 # BEGIN FEATURE CENTER_TILES
@@ -115,39 +120,9 @@ class TilesImpl(object):
                         float(bb[5]) - float(bb[4])]
 # END FEATURE TILES_POSITION
 # BEGIN FEATURE TILES_SELECTION
-    def matchTiles(self, tile1, tile2):
-        id1 = self.ids[tile1]
-        id2 = self.ids[tile2]
-        # Tiles do not match.
-        if (id1 != id2):
-            return False
-        # Delete matching tiles.
-        self.deleteTile(tile1)
-        self.deleteTile(tile2)
-        self.refreshAvailability()
-        return True
     def onTileSelection(self, key, value):
-        tileName = key[2]
-        if (self.lastSelectedTile):
-            # Do nothing.
-            if (tileName == self.lastSelectedTile):
-                return
-            # Deselect previously selected tile.
-            self.setTileSelected(self.lastSelectedTile, False)
-            # Match.
-            if (self.matchTiles(self.lastSelectedTile, tileName)):
-                self.lastSelectedTile = None
-                return
-        # Select tile.
-        self.setTileSelected(tileName, True)
-        self.lastSelectedTile = tileName
-    def setTileSelected(self, tileName, state):
-        id = self.ids[tileName]
-        mat = TILE_PREFIX_MATERIAL + str(id)
-        if (state):
-            mat = TILE_MATERIAL_SELECTED.format(id)
-        self.c.setConst("TILE", tileName)
-        self.c.set("node.$SCENE.$TILE.material", mat)
+        self.lastSelectedTile = key[2]
+        self.c.set("$SEQSELECT.active", "1")
 # END FEATURE TILES_SELECTION
 # BEGIN FEATURE TILES_STATS
     def reportStats(self):
@@ -207,13 +182,9 @@ class TilesImpl(object):
 class Tiles(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Tiles")
-        self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-# BEGIN FEATURE TILES_SELECTION
-        self.c.listen("node.$SCENE..selected", None, self.impl.onTileSelection)
-        self.impl.lastSelectedTile = None
-# END FEATURE TILES_SELECTION
+        self.impl = TilesImpl(self.c, nodeName)
 # BEGIN FEATURE TILES_STATS
         # Report only.
         self.c.provide("tiles.stats")

@@ -16,6 +16,7 @@ class TilesImpl(object):
         # MJIN2_FEATURE CENTER_TILES/INIT
         # MJIN2_FEATURE IDENTIFY_TILES/INIT
         # MJIN2_FEATURE TILES_AVAILABILITY/INIT
+        # MJIN2_FEATURE TILES_SELECTION/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE CENTER_TILES/IMPL
@@ -50,10 +51,9 @@ class TilesImpl(object):
 class Tiles(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Tiles")
-        self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-        # MJIN2_FEATURE TILES_SELECTION/INIT
+        self.impl = TilesImpl(self.c, nodeName)
         # MJIN2_FEATURE TILES_STATS/INIT
     def __del__(self):
         # Tear down.

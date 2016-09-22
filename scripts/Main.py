@@ -8,7 +8,7 @@ MAIN_SOUND_START     = "soundBuffer.default.start"
 # END FEATURE MAIN_SOUND_START
 # BEGIN FEATURE MAIN_SOUND_SELECTION
 MAIN_SOUND_SELECTION_API = "main.replaySoundSelection"
-MAIN_SOUND_SELECTION     = "soundBuffer.default.select"
+MAIN_SOUND_SELECTION     = "soundBuffer.default.selection"
 # END FEATURE MAIN_SOUND_SELECTION
 # BEGIN FEATURE MAIN_LAYOUT
 #MAIN_LAYOUT     = "X_shaped"
@@ -131,9 +131,9 @@ class MainImpl(object):
 class Main(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Main")
-        self.impl = MainImpl(self.c)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
+        self.impl = MainImpl(self.c)
     def __del__(self):
         # Tear down.
         self.c.clear()

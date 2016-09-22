@@ -39,9 +39,9 @@ class MainImpl(object):
 class Main(object):
     def __init__(self, sceneName, nodeName, env):
         self.c = EnvironmentClient(env, "Main")
-        self.impl = MainImpl(self.c)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
+        self.impl = MainImpl(self.c)
     def __del__(self):
         # Tear down.
         self.c.clear()

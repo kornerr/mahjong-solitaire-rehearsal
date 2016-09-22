@@ -2,7 +2,7 @@
 CLASS Main
     PART CONST
         MAIN_SOUND_SELECTION_API = "main.replaySoundSelection"
-        MAIN_SOUND_SELECTION     = "soundBuffer.default.select"
+        MAIN_SOUND_SELECTION     = "soundBuffer.default.selection"
     PART INIT
         self.c.setConst("SNDSELECTION", MAIN_SOUND_SELECTION)
         self.c.provide(MAIN_SOUND_SELECTION_API, self.setReplaySoundSelection)

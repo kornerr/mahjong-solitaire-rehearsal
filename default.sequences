@@ -9,7 +9,7 @@ start
 #layoutErrors
 #    showError
 tileSelection
-    main.replaySoundSelect
+    main.replaySoundSelection
 #    depictSelection
 #    matchTiles
 #matchSuccess
