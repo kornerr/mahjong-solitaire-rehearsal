@@ -26,3 +26,7 @@ CLASS Tiles
                 mat = TILE_MARKED_MATERIAL.format(id)
             self.c.setConst("TILE", tileName)
             self.c.set("node.$SCENE.$TILE.material", mat)
+    PART DELETE
+        if (self.lastMarkedTile and
+            (self.lastMarkedTile == tileName)):
+            self.lastMarkedTile = None

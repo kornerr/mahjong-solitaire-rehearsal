@@ -1,5 +1,7 @@
 soundBuffer
     default
+        match
+            file = sounds/cleaner.ogg
         selection
             file = sounds/selection.ogg
         start

@@ -11,8 +11,9 @@ start
 tileSelection
     main.replaySoundSelection
     tiles.markSelectedTile
-#    matchTiles
-#matchSuccess
+    tiles.match
+matchSuccess
+    main.replaySoundMatch
 #    deleteTilePair
 #    deleteTileIDs
 #    deleteTileAvailabilities

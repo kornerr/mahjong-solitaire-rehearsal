@@ -14,6 +14,10 @@ TILE_SEQUENCE_SELECTION = "sequence.default.tileSelection"
 TILE_MARKED_API      = "tiles.markSelectedTile"
 TILE_MARKED_MATERIAL = "tile0{0}_selected"
 # END FEATURE TILES_SELECTION_MARK
+# BEGIN FEATURE TILES_SELECTION_MATCH
+TILE_MATCH_API              = "tiles.match"
+TILE_SEQUENCE_MATCH_SUCCESS = "sequence.default.matchSuccess"
+# END FEATURE TILES_SELECTION_MATCH
 
 class TilesImpl(object):
     def __init__(self, c, nodeName):
@@ -45,6 +49,11 @@ class TilesImpl(object):
         self.c.provide(TILE_MARKED_API, self.setMarkSelectedTile)
         self.lastMarkedTile = None
 # END FEATURE TILES_SELECTION_MARK
+# BEGIN FEATURE TILES_SELECTION_MATCH
+        self.c.setConst("SEQMATCH", TILE_SEQUENCE_MATCH_SUCCESS)
+        self.c.provide(TILE_MATCH_API, self.setMatch)
+        self.lastMatchedTile = None
+# END FEATURE TILES_SELECTION_MATCH
     def __del__(self):
         self.c = None
 # BEGIN FEATURE CENTER_TILES
@@ -153,6 +162,19 @@ class TilesImpl(object):
         self.c.setConst("TILE", tileName)
         self.c.set("node.$SCENE.$TILE.material", mat)
 # END FEATURE TILES_SELECTION_MARK
+# BEGIN FEATURE TILES_SELECTION_MATCH
+    def setMatch(self, key, value):
+        # Try to match.
+        if (self.lastMatchedTile):
+            id1 = self.ids[self.lastMatchedTile]
+            id2 = self.ids[self.lastSelectedTile]
+            # Successful match.
+            if (id1 == id2):
+                print "match!"
+                self.c.set("$SEQMATCH.active", "1")
+        self.lastMatchedTile = self.lastSelectedTile
+        self.c.report(TILE_MATCH_API, "0")
+# END FEATURE TILES_SELECTION_MATCH
 # BEGIN FEATURE TILES_STATS
     def reportStats(self):
         hasTiles   = len(self.ids) > 0
@@ -191,6 +213,16 @@ class TilesImpl(object):
 # BEGIN FEATURE TILES_AVAILABILITY
         del self.available[tileName]
 # END FEATURE TILES_AVAILABILITY
+# BEGIN FEATURE TILES_SELECTION_MARK
+        if (self.lastMarkedTile and
+            (self.lastMarkedTile == tileName)):
+            self.lastMarkedTile = None
+# END FEATURE TILES_SELECTION_MARK
+# BEGIN FEATURE TILES_SELECTION_MATCH
+        if (self.lastMatchedTile and
+            (self.lastMatchedTile == tileName)):
+            self.lastMatchedTile = None
+# END FEATURE TILES_SELECTION_MATCH
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)

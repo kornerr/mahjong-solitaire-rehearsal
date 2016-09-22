@@ -6,6 +6,7 @@ TILE_PREFIX_MATERIAL = "tile0"
 # MJIN2_FEATURE TILES_AVAILABILITY/CONST
 # MJIN2_FEATURE TILES_SELECTION/CONST
 # MJIN2_FEATURE TILES_SELECTION_MARK/CONST
+# MJIN2_FEATURE TILES_SELECTION_MATCH/CONST
 
 class TilesImpl(object):
     def __init__(self, c, nodeName):
@@ -19,6 +20,7 @@ class TilesImpl(object):
         # MJIN2_FEATURE TILES_AVAILABILITY/INIT
         # MJIN2_FEATURE TILES_SELECTION/INIT
         # MJIN2_FEATURE TILES_SELECTION_MARK/INIT
+        # MJIN2_FEATURE TILES_SELECTION_MATCH/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE CENTER_TILES/IMPL
@@ -27,6 +29,7 @@ class TilesImpl(object):
     # MJIN2_FEATURE TILES_POSITION/IMPL
     # MJIN2_FEATURE TILES_SELECTION/IMPL
     # MJIN2_FEATURE TILES_SELECTION_MARK/IMPL
+    # MJIN2_FEATURE TILES_SELECTION_MATCH/IMPL
     # MJIN2_FEATURE TILES_STATS/IMPL
     def createTileOnce(self, tileName):
         if (tileName in self.tiles):
@@ -41,6 +44,8 @@ class TilesImpl(object):
         self.c.set("node.$SCENE.$TILE.parent", "")
         # MJIN2_FEATURE IDENTIFY_TILES/DELETE
         # MJIN2_FEATURE TILES_AVAILABILITY/DELETE
+        # MJIN2_FEATURE TILES_SELECTION_MARK/DELETE
+        # MJIN2_FEATURE TILES_SELECTION_MATCH/DELETE
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)

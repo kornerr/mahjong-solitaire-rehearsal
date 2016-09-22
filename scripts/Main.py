@@ -10,6 +10,10 @@ MAIN_SOUND_START     = "soundBuffer.default.start"
 MAIN_SOUND_SELECTION_API = "main.replaySoundSelection"
 MAIN_SOUND_SELECTION     = "soundBuffer.default.selection"
 # END FEATURE MAIN_SOUND_SELECTION
+# BEGIN FEATURE MAIN_SOUND_MATCH
+MAIN_SOUND_MATCH_API = "main.replaySoundMatch"
+MAIN_SOUND_MATCH     = "soundBuffer.default.match"
+# END FEATURE MAIN_SOUND_MATCH
 # BEGIN FEATURE MAIN_LAYOUT
 #MAIN_LAYOUT     = "X_shaped"
 MAIN_LAYOUT     = "test"
@@ -44,6 +48,10 @@ class MainImpl(object):
         self.c.setConst("SNDSELECTION", MAIN_SOUND_SELECTION)
         self.c.provide(MAIN_SOUND_SELECTION_API, self.setReplaySoundSelection)
 # END FEATURE MAIN_SOUND_SELECTION
+# BEGIN FEATURE MAIN_SOUND_MATCH
+        self.c.setConst("SNDMATCH", MAIN_SOUND_MATCH)
+        self.c.provide(MAIN_SOUND_MATCH_API, self.setReplaySoundMatch)
+# END FEATURE MAIN_SOUND_MATCH
 # BEGIN FEATURE MAIN_LAYOUT
         self.c.setConst("RESOLVER", MAIN_RESOLVER)
         self.c.provide(MAIN_LAYOUT_API, self.setLoadLayout)
@@ -69,6 +77,11 @@ class MainImpl(object):
         self.c.set("$SNDSELECTION.state", "play")
         self.c.report(MAIN_SOUND_SELECTION_API, "0")
 # END FEATURE MAIN_SOUND_SELECTION
+# BEGIN FEATURE MAIN_SOUND_MATCH
+    def setReplaySoundMatch(self, key, value):
+        self.c.set("$SNDMATCH.state", "play")
+        self.c.report(MAIN_SOUND_MATCH_API, "0")
+# END FEATURE MAIN_SOUND_MATCH
 # BEGIN FEATURE MAIN_LAYOUT
     def setLoadLayout(self, key, value):
         fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,
