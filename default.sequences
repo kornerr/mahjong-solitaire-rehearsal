@@ -14,10 +14,8 @@ tileSelection
     tiles.match
 matchSuccess
     main.replaySoundMatch
-#    deleteTilePair
-#    deleteTileIDs
-#    deleteTileAvailabilities
-#    refreshAvailability
+    tiles.deleteMatched
+    tiles.refreshAvailability
 #    checkResult
 #victory
 #    makeTilesFallDown
