@@ -1,5 +1,5 @@
 start
-    main.replayStartSound
+    main.replaySoundStart
     main.loadLayout
 #    main.checkLayoutErrors
     main.createTiles
@@ -8,7 +8,8 @@ start
     tiles.refreshAvailability
 #layoutErrors
 #    showError
-#tileSelection
+tileSelection
+    main.replaySoundSelect
 #    depictSelection
 #    matchTiles
 #matchSuccess

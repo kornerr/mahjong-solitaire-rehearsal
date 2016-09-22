@@ -2,10 +2,14 @@
 from pymjin2 import *
 
 MAIN_SEQUENCE_START = "sequence.default.start"
-# BEGIN FEATURE MAIN_START_SOUND
-MAIN_START_SOUND_API = "main.replayStartSound"
-MAIN_START_SOUND     = "soundBuffer.default.start"
-# END FEATURE MAIN_START_SOUND
+# BEGIN FEATURE MAIN_SOUND_START
+MAIN_SOUND_START_API = "main.replaySoundStart"
+MAIN_SOUND_START     = "soundBuffer.default.start"
+# END FEATURE MAIN_SOUND_START
+# BEGIN FEATURE MAIN_SOUND_SELECTION
+MAIN_SOUND_SELECTION_API = "main.replaySoundSelection"
+MAIN_SOUND_SELECTION     = "soundBuffer.default.select"
+# END FEATURE MAIN_SOUND_SELECTION
 # BEGIN FEATURE MAIN_LAYOUT
 #MAIN_LAYOUT     = "X_shaped"
 MAIN_LAYOUT     = "test"
@@ -32,10 +36,14 @@ class MainImpl(object):
         self.c = c
         self.isOn = False
         self.c.listen("input.SPACE.key", "1", self.onSpace)
-# BEGIN FEATURE MAIN_START_SOUND
-        self.c.setConst("START_SOUND", MAIN_START_SOUND)
-        self.c.provide(MAIN_START_SOUND_API, self.setReplayStartSound)
-# END FEATURE MAIN_START_SOUND
+# BEGIN FEATURE MAIN_SOUND_START
+        self.c.setConst("SNDSTART", MAIN_SOUND_START)
+        self.c.provide(MAIN_SOUND_START_API, self.setReplaySoundStart)
+# END FEATURE MAIN_SOUND_START
+# BEGIN FEATURE MAIN_SOUND_SELECTION
+        self.c.setConst("SNDSELECTION", MAIN_SOUND_SELECTION)
+        self.c.provide(MAIN_SOUND_SELECTION_API, self.setReplaySoundSelection)
+# END FEATURE MAIN_SOUND_SELECTION
 # BEGIN FEATURE MAIN_LAYOUT
         self.c.setConst("RESOLVER", MAIN_RESOLVER)
         self.c.provide(MAIN_LAYOUT_API, self.setLoadLayout)
@@ -51,11 +59,16 @@ class MainImpl(object):
 # END FEATURE IDENTIFY_TILES
     def __del__(self):
         self.c = None
-# BEGIN FEATURE MAIN_START_SOUND
-    def setReplayStartSound(self, key, value):
-        self.c.set("$START_SOUND.state", "play")
-        self.c.report(MAIN_START_SOUND_API, "0")
-# END FEATURE MAIN_START_SOUND
+# BEGIN FEATURE MAIN_SOUND_START
+    def setReplaySoundStart(self, key, value):
+        self.c.set("$SNDSTART.state", "play")
+        self.c.report(MAIN_SOUND_START_API, "0")
+# END FEATURE MAIN_SOUND_START
+# BEGIN FEATURE MAIN_SOUND_SELECTION
+    def setReplaySoundSelection(self, key, value):
+        self.c.set("$SNDSELECTION.state", "play")
+        self.c.report(MAIN_SOUND_SELECTION_API, "0")
+# END FEATURE MAIN_SOUND_SELECTION
 # BEGIN FEATURE MAIN_LAYOUT
     def setLoadLayout(self, key, value):
         fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,

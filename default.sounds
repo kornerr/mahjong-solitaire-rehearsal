@@ -1,4 +1,6 @@
 soundBuffer
     default
+        selection
+            file = sounds/selection.ogg
         start
             file = sounds/start.ogg
