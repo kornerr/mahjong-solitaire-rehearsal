@@ -1,20 +1,19 @@
-# Load provided layout.
+# Provide "main.loadLayout.
 CLASS Main
     PART CONST
         #MAIN_LAYOUT     = "X_shaped"
         MAIN_LAYOUT     = "test"
         #MAIN_LAYOUT     = "cat"
         #MAIN_LAYOUT     = "default"
+        MAIN_LAYOUT_API = "main.loadLayout"
         MAIN_LAYOUT_DIR = "layouts"
         MAIN_LAYOUT_EXT = "layout"
         MAIN_RESOLVER   = "pathResolver.MainResolver"
     PART INIT
         self.c.setConst("RESOLVER", MAIN_RESOLVER)
-        self.c.provide("main.loadLayout", self.setLoadLayout)
+        self.c.provide(MAIN_LAYOUT_API, self.setLoadLayout)
     PART IMPL
         def setLoadLayout(self, key, value):
-            print "setLoadLayout"
-            return
             fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,
                                             MAIN_LAYOUT,
                                             MAIN_LAYOUT_EXT)
@@ -23,6 +22,6 @@ CLASS Main
             self.c.set("layout.parseFileName", fileNameAbs)
             errors = self.c.get("layout.errors")
             if (len(errors)):
-                print "Cannot proceed, because there are errors:"
-                print errors
-                return
+                print "There are errors:", errors
+            # TODO: react to error.
+            self.c.report(MAIN_LAYOUT_API, "0")

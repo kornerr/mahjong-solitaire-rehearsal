@@ -1,4 +1,4 @@
-# Provide "main.replayStartSound"
+# Provide "main.replayStartSound".
 CLASS Main
     PART CONST
         MAIN_START_SOUND_API = "main.replayStartSound"

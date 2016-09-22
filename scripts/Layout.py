@@ -17,6 +17,16 @@ class LayoutImpl(object):
     def __init__(self, c):
         self.c = c
         self.positions = []
+        self.c.provide("layout.parseFileName", self.setParseFileName)
+        self.c.provide("layout.positions", None, self.pos)
+# BEGIN FEATURE LAYOUT_DIMENSIONS
+        self.c.provide("layout.dimensions", None, self.dimensions)
+        self.dim = ["0", "0"]
+# END FEATURE LAYOUT_DIMENSIONS
+# BEGIN FEATURE LAYOUT_ERRORS
+        self.c.provide("layout.errors", None, self.errors)
+        self.errlist = []
+# END FEATURE LAYOUT_ERRORS
     def __del__(self):
         self.c = None
 # BEGIN FEATURE LAYOUT_DIMENSIONS
@@ -115,17 +125,6 @@ class Layout(object):
         self.impl = LayoutImpl(self.c)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-        # API.
-        self.c.provide("layout.parseFileName", self.impl.setParseFileName)
-        self.c.provide("layout.positions", None, self.impl.pos)
-# BEGIN FEATURE LAYOUT_DIMENSIONS
-        self.c.provide("layout.dimensions", None, self.impl.dimensions)
-        self.impl.dim = ["0", "0"]
-# END FEATURE LAYOUT_DIMENSIONS
-# BEGIN FEATURE LAYOUT_ERRORS
-        self.c.provide("layout.errors", None, self.impl.errors)
-        self.impl.errlist = []
-# END FEATURE LAYOUT_ERRORS
     def __del__(self):
         # Tear down.
         self.c.clear()

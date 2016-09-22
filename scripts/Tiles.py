@@ -15,10 +15,14 @@ class TilesImpl(object):
         self.c = c
         self.nodeParent = nodeName
         self.tiles = { }
+        self.c.provide("tile..position", self.setPosition)
 # BEGIN FEATURE TILES_POSITION
         # Tile dimensions.
         self.tileDim = []
 # END FEATURE TILES_POSITION
+# BEGIN FEATURE CENTER_TILES
+        self.c.provide("tiles.center", self.setCenter)
+# END FEATURE CENTER_TILES
     def __del__(self):
         self.c = None
 # BEGIN FEATURE CENTER_TILES
@@ -204,11 +208,6 @@ class Tiles(object):
         self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-        # API.
-        self.c.provide("tile..position", self.impl.setPosition)
-# BEGIN FEATURE CENTER_TILES
-        self.c.provide("tiles.center", self.impl.setCenter)
-# END FEATURE CENTER_TILES
 # BEGIN FEATURE IDENTIFY_TILES
         self.c.provide("tile..id", self.impl.setTileID, self.impl.tileID)
         self.impl.ids = {}

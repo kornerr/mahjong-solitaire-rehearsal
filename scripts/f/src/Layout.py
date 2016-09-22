@@ -14,6 +14,10 @@ class LayoutImpl(object):
     def __init__(self, c):
         self.c = c
         self.positions = []
+        self.c.provide("layout.parseFileName", self.setParseFileName)
+        self.c.provide("layout.positions", None, self.pos)
+        # MJIN2_FEATURE LAYOUT_DIMENSIONS/INIT
+        # MJIN2_FEATURE LAYOUT_ERRORS/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE LAYOUT_DIMENSIONS/IMPL
@@ -88,11 +92,6 @@ class Layout(object):
         self.impl = LayoutImpl(self.c)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-        # API.
-        self.c.provide("layout.parseFileName", self.impl.setParseFileName)
-        self.c.provide("layout.positions", None, self.impl.pos)
-        # MJIN2_FEATURE LAYOUT_DIMENSIONS/INIT
-        # MJIN2_FEATURE LAYOUT_ERRORS/INIT
     def __del__(self):
         # Tear down.
         self.c.clear()

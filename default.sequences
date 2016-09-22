@@ -1,9 +1,9 @@
 start
     main.replayStartSound
-#    main.loadLayout
+    main.loadLayout
 #    main.checkLayoutErrors
-#    createTiles
-#    centerTiles
+    main.createTiles
+    main.centerTiles
 #    identifyTiles
 #    refreshAvailability
 #layoutErrors

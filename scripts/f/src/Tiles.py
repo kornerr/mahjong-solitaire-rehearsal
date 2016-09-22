@@ -11,7 +11,9 @@ class TilesImpl(object):
         self.c = c
         self.nodeParent = nodeName
         self.tiles = { }
+        self.c.provide("tile..position", self.setPosition)
         # MJIN2_FEATURE TILES_POSITION/INIT
+        # MJIN2_FEATURE CENTER_TILES/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE CENTER_TILES/IMPL
@@ -53,9 +55,6 @@ class Tiles(object):
         self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-        # API.
-        self.c.provide("tile..position", self.impl.setPosition)
-        # MJIN2_FEATURE CENTER_TILES/INIT
         # MJIN2_FEATURE IDENTIFY_TILES/INIT
         # MJIN2_FEATURE AVAILABLE_TILES/INIT
         # MJIN2_FEATURE TILES_SELECTION/INIT
