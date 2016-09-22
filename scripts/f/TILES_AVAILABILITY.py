@@ -1,19 +1,17 @@
-# Provide 'tiles.refreshAvailability' and use it.
-CLASS Main
-    PART IMPL
-        self.c.set("tiles.refreshAvailability", "1")
+# Provide "tiles.refreshAvailability".
 CLASS Tiles
     PART CONST
+        TILES_AVAILABILITY_API    = "tiles.refreshAvailability"
         TILE_MATERIAL_UNAVAILABLE = "tile0{0}_unavailable"
-    PART DELETE
-        del self.available[tileName]
     PART INIT
-        self.c.provide("tiles.refreshAvailability",
-                       self.impl.setRefreshAvailability)
-        self.impl.available = {}
+        self.c.provide(TILES_AVAILABILITY_API, self.setRefreshAvailability)
+        self.available = {}
     PART IMPL
         def setRefreshAvailability(self, key, value):
-            self.refreshAvailability()
+            for tileName in self.ids:
+                state = self.tileIsAvailable(tileName)
+                self.setTileAvailable(tileName, state)
+            self.c.report(TILES_AVAILABILITY_API, "0")
         def setTileAvailable(self, tileName, state):
             id = self.ids[tileName]
             mat = TILE_PREFIX_MATERIAL + str(id)
@@ -52,7 +50,5 @@ CLASS Tiles
                     return False
             # Tile is free.
             return True
-    PART REFRESH
-        for tileName in self.ids:
-            state = self.tileIsAvailable(tileName)
-            self.setTileAvailable(tileName, state)
+    PART DELETE
+        del self.available[tileName]

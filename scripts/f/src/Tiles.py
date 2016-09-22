@@ -3,7 +3,7 @@ from pymjin2 import *
 
 TILE_MODEL           = "models/tile.osgt"
 TILE_PREFIX_MATERIAL = "tile0"
-# MJIN2_FEATURE AVAILABLE_TILES/CONST
+# MJIN2_FEATURE TILES_AVAILABILITY/CONST
 # MJIN2_FEATURE TILES_SELECTION/CONST
 
 class TilesImpl(object):
@@ -14,11 +14,13 @@ class TilesImpl(object):
         self.c.provide("tile..position", self.setPosition)
         # MJIN2_FEATURE TILES_POSITION/INIT
         # MJIN2_FEATURE CENTER_TILES/INIT
+        # MJIN2_FEATURE IDENTIFY_TILES/INIT
+        # MJIN2_FEATURE TILES_AVAILABILITY/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE CENTER_TILES/IMPL
     # MJIN2_FEATURE IDENTIFY_TILES/IMPL
-    # MJIN2_FEATURE AVAILABLE_TILES/IMPL
+    # MJIN2_FEATURE TILES_AVAILABILITY/IMPL
     # MJIN2_FEATURE TILES_POSITION/IMPL
     # MJIN2_FEATURE TILES_SELECTION/IMPL
     # MJIN2_FEATURE TILES_STATS/IMPL
@@ -34,11 +36,7 @@ class TilesImpl(object):
         self.c.setConst("TILE", tileName)
         self.c.set("node.$SCENE.$TILE.parent", "")
         # MJIN2_FEATURE IDENTIFY_TILES/DELETE
-        # MJIN2_FEATURE AVAILABLE_TILES/DELETE
-    def refreshAvailability(self):
-        pass
-        # MJIN2_FEATURE AVAILABLE_TILES/REFRESH
-        # MJIN2_FEATURE TILES_STATS/REFRESH
+        # MJIN2_FEATURE TILES_AVAILABILITY/DELETE
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)
@@ -55,8 +53,6 @@ class Tiles(object):
         self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-        # MJIN2_FEATURE IDENTIFY_TILES/INIT
-        # MJIN2_FEATURE AVAILABLE_TILES/INIT
         # MJIN2_FEATURE TILES_SELECTION/INIT
         # MJIN2_FEATURE TILES_STATS/INIT
     def __del__(self):

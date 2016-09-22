@@ -3,9 +3,10 @@ from pymjin2 import *
 
 TILE_MODEL           = "models/tile.osgt"
 TILE_PREFIX_MATERIAL = "tile0"
-# BEGIN FEATURE AVAILABLE_TILES
+# BEGIN FEATURE TILES_AVAILABILITY
+TILES_AVAILABILITY_API    = "tiles.refreshAvailability"
 TILE_MATERIAL_UNAVAILABLE = "tile0{0}_unavailable"
-# END FEATURE AVAILABLE_TILES
+# END FEATURE TILES_AVAILABILITY
 # BEGIN FEATURE TILES_SELECTION
 TILE_MATERIAL_SELECTED = "tile0{0}_selected"
 # END FEATURE TILES_SELECTION
@@ -23,6 +24,14 @@ class TilesImpl(object):
 # BEGIN FEATURE CENTER_TILES
         self.c.provide("tiles.center", self.setCenter)
 # END FEATURE CENTER_TILES
+# BEGIN FEATURE IDENTIFY_TILES
+        self.c.provide("tile..id", self.setTileID, self.tileID)
+        self.ids = {}
+# END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE TILES_AVAILABILITY
+        self.c.provide(TILES_AVAILABILITY_API, self.setRefreshAvailability)
+        self.available = {}
+# END FEATURE TILES_AVAILABILITY
     def __del__(self):
         self.c = None
 # BEGIN FEATURE CENTER_TILES
@@ -51,9 +60,12 @@ class TilesImpl(object):
         # Store.
         self.ids[tileName] = int(sid)
 # END FEATURE IDENTIFY_TILES
-# BEGIN FEATURE AVAILABLE_TILES
+# BEGIN FEATURE TILES_AVAILABILITY
     def setRefreshAvailability(self, key, value):
-        self.refreshAvailability()
+        for tileName in self.ids:
+            state = self.tileIsAvailable(tileName)
+            self.setTileAvailable(tileName, state)
+        self.c.report(TILES_AVAILABILITY_API, "0")
     def setTileAvailable(self, tileName, state):
         id = self.ids[tileName]
         mat = TILE_PREFIX_MATERIAL + str(id)
@@ -92,7 +104,7 @@ class TilesImpl(object):
                 return False
         # Tile is free.
         return True
-# END FEATURE AVAILABLE_TILES
+# END FEATURE TILES_AVAILABILITY
 # BEGIN FEATURE TILES_POSITION
     def calculateTileDimOnce(self):
         if (len(self.tileDim)):
@@ -172,19 +184,9 @@ class TilesImpl(object):
 # BEGIN FEATURE IDENTIFY_TILES
         del self.ids[tileName]
 # END FEATURE IDENTIFY_TILES
-# BEGIN FEATURE AVAILABLE_TILES
+# BEGIN FEATURE TILES_AVAILABILITY
         del self.available[tileName]
-# END FEATURE AVAILABLE_TILES
-    def refreshAvailability(self):
-        pass
-# BEGIN FEATURE AVAILABLE_TILES
-        for tileName in self.ids:
-            state = self.tileIsAvailable(tileName)
-            self.setTileAvailable(tileName, state)
-# END FEATURE AVAILABLE_TILES
-# BEGIN FEATURE TILES_STATS
-        self.reportStats()
-# END FEATURE TILES_STATS
+# END FEATURE TILES_AVAILABILITY
     def setPosition(self, key, value):
         tileName = key[1]
         self.c.setConst("TILE", tileName)
@@ -208,15 +210,6 @@ class Tiles(object):
         self.impl = TilesImpl(self.c, nodeName)
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
-# BEGIN FEATURE IDENTIFY_TILES
-        self.c.provide("tile..id", self.impl.setTileID, self.impl.tileID)
-        self.impl.ids = {}
-# END FEATURE IDENTIFY_TILES
-# BEGIN FEATURE AVAILABLE_TILES
-        self.c.provide("tiles.refreshAvailability",
-                       self.impl.setRefreshAvailability)
-        self.impl.available = {}
-# END FEATURE AVAILABLE_TILES
 # BEGIN FEATURE TILES_SELECTION
         self.c.listen("node.$SCENE..selected", None, self.impl.onTileSelection)
         self.impl.lastSelectedTile = None

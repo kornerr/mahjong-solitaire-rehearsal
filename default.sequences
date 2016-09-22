@@ -4,8 +4,8 @@ start
 #    main.checkLayoutErrors
     main.createTiles
     main.centerTiles
-#    identifyTiles
-#    refreshAvailability
+    main.identifyTiles
+    tiles.refreshAvailability
 #layoutErrors
 #    showError
 #tileSelection
