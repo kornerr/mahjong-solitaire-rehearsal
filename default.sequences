@@ -10,7 +10,7 @@ start
 #    showError
 tileSelection
     main.replaySoundSelection
-#    depictSelection
+    tiles.markSelectedTile
 #    matchTiles
 #matchSuccess
 #    deleteTilePair
