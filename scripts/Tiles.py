@@ -19,6 +19,9 @@ TILE_DELETE_API             = "tiles.deleteMatched"
 TILE_MATCH_API              = "tiles.match"
 TILE_SEQUENCE_MATCH_SUCCESS = "sequence.default.matchSuccess"
 # END FEATURE TILES_SELECTION_MATCH
+# BEGIN FEATURE CHECK_RESULT
+TILES_STATS_API = "tiles.stats"
+# END FEATURE CHECK_RESULT
 
 class TilesImpl(object):
     def __init__(self, c, nodeName):
@@ -57,6 +60,9 @@ class TilesImpl(object):
         self.lastMatchedTile = None
         self.matchedTiles = []
 # END FEATURE TILES_SELECTION_MATCH
+# BEGIN FEATURE CHECK_RESULT
+        self.c.provide(TILES_STATS_API, None, self.stats)
+# END FEATURE CHECK_RESULT
     def __del__(self):
         self.c = None
 # BEGIN FEATURE CENTER_TILES
@@ -186,8 +192,8 @@ class TilesImpl(object):
             self.c.set("$SEQMATCH.active", "1")
         self.c.report(TILE_MATCH_API, "0")
 # END FEATURE TILES_SELECTION_MATCH
-# BEGIN FEATURE TILES_STATS
-    def reportStats(self):
+# BEGIN FEATURE CHECK_RESULT
+    def stats(self, key):
         hasTiles   = len(self.ids) > 0
         hasMatches = False
         # Find out if there is at least one pair
@@ -202,11 +208,9 @@ class TilesImpl(object):
             if (ids[id] > 1):
                 hasMatches = True
                 break
-        # Report.
-        val = ["1" if hasTiles else "0",
-               "1" if hasMatches else "0"]
-        self.c.report("tiles.stats", val)
-# END FEATURE TILES_STATS
+        return ["1" if hasTiles else "0",
+                "1" if hasMatches else "0"]
+# END FEATURE CHECK_RESULT
     def createTileOnce(self, tileName):
         if (tileName in self.tiles):
             return
@@ -257,10 +261,6 @@ class Tiles(object):
         self.c.setConst("SCENE", sceneName)
         self.c.setConst("NODE",  nodeName)
         self.impl = TilesImpl(self.c, nodeName)
-# BEGIN FEATURE TILES_STATS
-        # Report only.
-        self.c.provide("tiles.stats")
-# END FEATURE TILES_STATS
     def __del__(self):
         # Tear down.
         self.c.clear()

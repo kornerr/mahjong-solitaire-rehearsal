@@ -34,6 +34,9 @@ MAIN_CENTER_TILES_API = "main.centerTiles"
 MAIN_TILE_IDS     = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 MAIN_TILE_IDS_API = "main.identifyTiles"
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE CHECK_RESULT
+MAIN_RESULT_API = "main.checkResult"
+# END FEATURE CHECK_RESULT
 
 class MainImpl(object):
     def __init__(self, c):
@@ -65,6 +68,9 @@ class MainImpl(object):
 # BEGIN FEATURE IDENTIFY_TILES
         self.c.provide(MAIN_TILE_IDS_API, self.setIdentifyTiles)
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE CHECK_RESULT
+        self.c.provide(MAIN_RESULT_API, self.setCheckResult)
+# END FEATURE CHECK_RESULT
     def __del__(self):
         self.c = None
 # BEGIN FEATURE MAIN_SOUND_START
@@ -133,6 +139,15 @@ class MainImpl(object):
             del vpos[positionID]
         self.c.report(MAIN_TILE_IDS_API, "0")
 # END FEATURE IDENTIFY_TILES
+# BEGIN FEATURE CHECK_RESULT
+    def setCheckResult(self, key, value):
+        (hasTiles, hasMatches) = self.c.get("tiles.stats")
+        if (hasTiles == "0"):
+            print "Victory"
+        elif (hasMatches == "0"):
+            print "Loss"
+        self.c.report(MAIN_RESULT_API, "0")
+# END FEATURE CHECK_RESULT
     def onSpace(self, key, value):
         if self.isOn:
             return
