@@ -12,6 +12,7 @@ CLASS Tiles
             if (self.lastMarkedTile):
                 # Do nothing.
                 if (tileName == self.lastMarkedTile):
+                    self.c.report(TILE_MARKED_API, "0")
                     return
                 # Deselect previously selected tile.
                 self.setTileMarked(self.lastMarkedTile, False)

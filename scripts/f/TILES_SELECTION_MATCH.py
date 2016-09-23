@@ -19,6 +19,10 @@ CLASS Tiles
             self.matchedTiles = []
             # Try to match.
             if (self.lastMatchedTile):
+                # Do nothing.
+                if (self.lastMatchedTile == self.lastSelectedTile):
+                    self.c.report(TILE_MATCH_API, "0")
+                    return
                 id1 = self.ids[self.lastMatchedTile]
                 id2 = self.ids[self.lastSelectedTile]
                 # Successful match.
