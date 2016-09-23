@@ -21,3 +21,64 @@ node
         tiles
             parent = field
             script = scripts/Tiles.py
+        loss
+            parent = ROOT
+            position = -2.000000 -2.290000 0.400000
+            rotation = 40.000000 0.000000 90.000000
+        loss1
+            material = tile_loss_l
+            model = models/tile.osgt
+            parent = loss
+        loss2
+            material = tile_loss_o
+            model = models/tile.osgt
+            parent = loss
+            position = 0.150000 0.000000 0.000000
+        loss3
+            material = tile_loss_s
+            model = models/tile.osgt
+            parent = loss
+            position = 0.300000 0.000000 0.000000
+        loss4
+            material = tile_loss_s
+            model = models/tile.osgt
+            parent = loss
+            position = 0.450000 0.000000 0.000000
+        victory
+            parent = ROOT
+            position = -0.440000 0.150000 3.000000
+        victoryV
+            material = tile_victory_v
+            model = models/tile.osgt
+            parent = victory
+            position = 0.000000 0.300000 0.000000
+        victoryI
+            material = tile_victory_i
+            model = models/tile.osgt
+            parent = victory
+            position = 0.125000 0.200000 0.000000
+        victoryC
+            material = tile_victory_c
+            model = models/tile.osgt
+            parent = victory
+            position = 0.250000 0.100000 0.000000
+        victoryT
+            material = tile_victory_t
+            model = models/tile.osgt
+            parent = victory
+            position = 0.375000 0.000000 0.000000
+        victoryO
+            material = tile_victory_o
+            model = models/tile.osgt
+            parent = victory
+            position = 0.500000 0.100000 0.000000
+        victoryR
+            material = tile_victory_r
+            model = models/tile.osgt
+            parent = victory
+            position = 0.625000 0.200000 0.000000
+        victoryY
+            material = tile_victory_y
+            model = models/tile.osgt
+            parent = victory
+            position = 0.750000 0.300000 0.000000
