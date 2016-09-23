@@ -11,6 +11,7 @@ MAIN_SEQUENCE_START = "sequence.default.start"
 # MJIN2_FEATURE CENTER_TILES/CONST
 # MJIN2_FEATURE IDENTIFY_TILES/CONST
 # MJIN2_FEATURE CHECK_RESULT/CONST
+# MJIN2_FEATURE MAIN_LOSE_WIN/CONST
 
 class MainImpl(object):
     def __init__(self, c):
@@ -26,6 +27,7 @@ class MainImpl(object):
         # MJIN2_FEATURE CENTER_TILES/INIT
         # MJIN2_FEATURE IDENTIFY_TILES/INIT
         # MJIN2_FEATURE CHECK_RESULT/INIT
+        # MJIN2_FEATURE MAIN_LOSE_WIN/INIT
     def __del__(self):
         self.c = None
     # MJIN2_FEATURE MAIN_SOUND_START/IMPL
@@ -37,6 +39,7 @@ class MainImpl(object):
     # MJIN2_FEATURE CENTER_TILES/IMPL
     # MJIN2_FEATURE IDENTIFY_TILES/IMPL
     # MJIN2_FEATURE CHECK_RESULT/IMPL
+    # MJIN2_FEATURE MAIN_LOSE_WIN/IMPL
     def onSpace(self, key, value):
         if self.isOn:
             return

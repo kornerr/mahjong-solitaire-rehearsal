@@ -46,7 +46,7 @@ node
             position = 0.450000 0.000000 0.000000
         victory
             parent = ROOT
-            position = -0.440000 0.150000 3.000000
+            position = -0.440000 0.000000 3.000000
         victoryV
             material = tile_victory_v
             model = models/tile.osgt
@@ -82,3 +82,7 @@ node
             model = models/tile.osgt
             parent = victory
             position = 0.750000 0.300000 0.000000
+        shadowFix
+            model = models/tile.osgt
+            parent = victory
+            position = 1.000000 0.000000 0.000000

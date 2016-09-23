@@ -19,7 +19,13 @@ matchSuccess
     main.checkResult
 victory
     main.replaySoundVictory
-#    makeTilesFallDown
+    main.dropVictoryTile
+    main.dropVictoryTile
+    main.dropVictoryTile
+    main.dropVictoryTile
+    main.dropVictoryTile
+    main.dropVictoryTile
+    main.dropVictoryTile
 loss
     main.replaySoundLoss
-#    rotateToLossTiles
+    main.lose

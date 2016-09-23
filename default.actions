@@ -1,5 +1,13 @@
 rotate
     default
-        rotateBall
+        lose
             point = 0 0 0 0
-            point = 1000 0 360 0
+            point = 300 0 0 50
+            point = 1000 0 0 90
+move
+    default
+        drop
+            point = 0 0 0 0
+            point = 200 0 0 -3
+            point = 100 0 0 -2.9
+            point = 50 0 0 -3

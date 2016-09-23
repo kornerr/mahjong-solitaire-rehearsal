@@ -21,8 +21,9 @@ MAIN_SOUND_VICTORY_API = "main.replaySoundVictory"
 MAIN_SOUND_VICTORY     = "soundBuffer.default.victory"
 # END FEATURE MAIN_SOUND_LOSS_VICTORY
 # BEGIN FEATURE MAIN_LAYOUT
-#MAIN_LAYOUT     = "X_shaped"
-MAIN_LAYOUT     = "test"
+MAIN_LAYOUT     = "X_shaped"
+#MAIN_LAYOUT     = "test"
+#MAIN_LAYOUT     = "simple"
 #MAIN_LAYOUT     = "cat"
 #MAIN_LAYOUT     = "default"
 MAIN_LAYOUT_API = "main.loadLayout"
@@ -45,6 +46,14 @@ MAIN_RESULT_API              = "main.checkResult"
 MAIN_RESULT_SEQUENCE_LOSS    = "sequence.default.loss"
 MAIN_RESULT_SEQUENCE_VICTORY = "sequence.default.victory"
 # END FEATURE CHECK_RESULT
+# BEGIN FEATURE MAIN_LOSE_WIN
+MAIN_LOSE      = "rotate.default.lose"
+MAIN_LOSE_API  = "main.lose"
+MAIN_LOSE_NODE = "camera"
+MAIN_WIN       = "move.default.drop"
+MAIN_WIN_API   = "main.dropVictoryTile"
+MAIN_WIN_NODE  = "victory"
+# END FEATURE MAIN_LOSE_WIN
 
 class MainImpl(object):
     def __init__(self, c):
@@ -87,6 +96,16 @@ class MainImpl(object):
         self.c.setConst("SEQLOSS",    MAIN_RESULT_SEQUENCE_LOSS)
         self.c.setConst("SEQVICTORY", MAIN_RESULT_SEQUENCE_VICTORY)
 # END FEATURE CHECK_RESULT
+# BEGIN FEATURE MAIN_LOSE_WIN
+        self.c.provide(MAIN_LOSE_API, self.setLose)
+        self.c.setConst("LOSE",      MAIN_LOSE)
+        self.c.setConst("LOSE_NODE", MAIN_LOSE_NODE)
+        self.c.provide(MAIN_WIN_API, self.setDropTile)
+        self.c.setConst("WIN",      MAIN_WIN)
+        self.c.setConst("WIN_NODE", MAIN_WIN_NODE)
+        self.c.listen("$WIN.$SCENE..active", "0", self.onDroppedTile)
+        self.vchildren = []
+# END FEATURE MAIN_LOSE_WIN
     def __del__(self):
         self.c = None
 # BEGIN FEATURE MAIN_SOUND_START
@@ -174,6 +193,22 @@ class MainImpl(object):
             self.c.set("$SEQLOSS.active", "1")
         self.c.report(MAIN_RESULT_API, "0")
 # END FEATURE CHECK_RESULT
+# BEGIN FEATURE MAIN_LOSE_WIN
+    def locateChildrenOnce(self):
+        if (len(self.vchildren)):
+            return
+        self.vchildren = list(self.c.get("node.$SCENE.$WIN_NODE.children"))
+    def onDroppedTile(self, key, value):
+        self.c.report(MAIN_WIN_API, "0")
+    def setLose(self, key, value):
+        self.c.set("$LOSE.$SCENE.$LOSE_NODE.active", "1")
+        self.c.report(MAIN_LOSE_API, "0")
+    def setDropTile(self, key, value):
+        self.locateChildrenOnce()
+        child = self.vchildren.pop(0)
+        self.c.setConst("CHILD", child)
+        self.c.set("$WIN.$SCENE.$CHILD.active", "1")
+# END FEATURE MAIN_LOSE_WIN
     def onSpace(self, key, value):
         if self.isOn:
             return
