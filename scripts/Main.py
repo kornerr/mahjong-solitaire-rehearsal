@@ -14,6 +14,12 @@ MAIN_SOUND_SELECTION     = "soundBuffer.default.selection"
 MAIN_SOUND_MATCH_API = "main.replaySoundMatch"
 MAIN_SOUND_MATCH     = "soundBuffer.default.match"
 # END FEATURE MAIN_SOUND_MATCH
+# BEGIN FEATURE MAIN_SOUND_LOSS_VICTORY
+MAIN_SOUND_LOSS_API    = "main.replaySoundLoss"
+MAIN_SOUND_LOSS        = "soundBuffer.default.loss"
+MAIN_SOUND_VICTORY_API = "main.replaySoundVictory"
+MAIN_SOUND_VICTORY     = "soundBuffer.default.victory"
+# END FEATURE MAIN_SOUND_LOSS_VICTORY
 # BEGIN FEATURE MAIN_LAYOUT
 #MAIN_LAYOUT     = "X_shaped"
 MAIN_LAYOUT     = "test"
@@ -35,7 +41,9 @@ MAIN_TILE_IDS     = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 MAIN_TILE_IDS_API = "main.identifyTiles"
 # END FEATURE IDENTIFY_TILES
 # BEGIN FEATURE CHECK_RESULT
-MAIN_RESULT_API = "main.checkResult"
+MAIN_RESULT_API              = "main.checkResult"
+MAIN_RESULT_SEQUENCE_LOSS    = "sequence.default.loss"
+MAIN_RESULT_SEQUENCE_VICTORY = "sequence.default.victory"
 # END FEATURE CHECK_RESULT
 
 class MainImpl(object):
@@ -55,6 +63,12 @@ class MainImpl(object):
         self.c.setConst("SNDMATCH", MAIN_SOUND_MATCH)
         self.c.provide(MAIN_SOUND_MATCH_API, self.setReplaySoundMatch)
 # END FEATURE MAIN_SOUND_MATCH
+# BEGIN FEATURE MAIN_SOUND_LOSS_VICTORY
+        self.c.provide(MAIN_SOUND_LOSS_API,    self.setReplaySoundLoss)
+        self.c.provide(MAIN_SOUND_VICTORY_API, self.setReplaySoundVictory)
+        self.c.setConst("SNDLOSS",    MAIN_SOUND_LOSS)
+        self.c.setConst("SNDVICTORY", MAIN_SOUND_VICTORY)
+# END FEATURE MAIN_SOUND_LOSS_VICTORY
 # BEGIN FEATURE MAIN_LAYOUT
         self.c.setConst("RESOLVER", MAIN_RESOLVER)
         self.c.provide(MAIN_LAYOUT_API, self.setLoadLayout)
@@ -70,6 +84,8 @@ class MainImpl(object):
 # END FEATURE IDENTIFY_TILES
 # BEGIN FEATURE CHECK_RESULT
         self.c.provide(MAIN_RESULT_API, self.setCheckResult)
+        self.c.setConst("SEQLOSS",    MAIN_RESULT_SEQUENCE_LOSS)
+        self.c.setConst("SEQVICTORY", MAIN_RESULT_SEQUENCE_VICTORY)
 # END FEATURE CHECK_RESULT
     def __del__(self):
         self.c = None
@@ -88,6 +104,14 @@ class MainImpl(object):
         self.c.set("$SNDMATCH.state", "play")
         self.c.report(MAIN_SOUND_MATCH_API, "0")
 # END FEATURE MAIN_SOUND_MATCH
+# BEGIN FEATURE MAIN_SOUND_LOSS_VICTORY
+    def setReplaySoundLoss(self, key, value):
+        self.c.set("$SNDLOSS.state", "play")
+        self.c.report(MAIN_SOUND_LOSS_API, "0")
+    def setReplaySoundVictory(self, key, value):
+        self.c.set("$SNDVICTORY.state", "play")
+        self.c.report(MAIN_SOUND_VICTORY_API, "0")
+# END FEATURE MAIN_SOUND_LOSS_VICTORY
 # BEGIN FEATURE MAIN_LAYOUT
     def setLoadLayout(self, key, value):
         fileName = "{0}/{1}.{2}".format(MAIN_LAYOUT_DIR,
@@ -144,8 +168,10 @@ class MainImpl(object):
         (hasTiles, hasMatches) = self.c.get("tiles.stats")
         if (hasTiles == "0"):
             print "Victory"
+            self.c.set("$SEQVICTORY.active", "1")
         elif (hasMatches == "0"):
             print "Loss"
+            self.c.set("$SEQLOSS.active", "1")
         self.c.report(MAIN_RESULT_API, "0")
 # END FEATURE CHECK_RESULT
     def onSpace(self, key, value):

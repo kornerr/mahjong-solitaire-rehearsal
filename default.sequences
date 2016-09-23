@@ -17,7 +17,9 @@ matchSuccess
     tiles.deleteMatched
     tiles.refreshAvailability
     main.checkResult
-#victory
+victory
+    main.replaySoundVictory
 #    makeTilesFallDown
-#loss
+loss
+    main.replaySoundLoss
 #    rotateToLossTiles
